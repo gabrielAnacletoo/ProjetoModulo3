@@ -7,15 +7,15 @@
 Antes de começar, certifique-se de ter o [Node.js](https://nodejs.org/) instalado em sua máquina.
 
 1. **Clone o repositório:**
-```bash
+
 - $ git clone https://github.com/gabrielAnacletoo/ProjetoModulo3
-```bash
+
 2. **Vá para o repositório Back-end:**
 - $ cd Projeto modulo 3
-```bash
+
 3. **Instale as dependencias**
 - $ npm install
-```bash
+
 4. **Rode a aplicação**
 - $ npm run start:dev
 
