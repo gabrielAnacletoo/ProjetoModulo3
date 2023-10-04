@@ -1,6 +1,6 @@
 # 🚀 API de Busca de Vagas de Emprego 
-- Api para busca de vagas de emprego, é possivel cadastrar e buscar vagas,
-- Além de cadastrar usuários, editar e adicionar vagas aos favoritos.
+ Api para busca de vagas de emprego, é possivel cadastrar e buscar vagas,
+ Além de cadastrar usuários, editar e adicionar vagas aos favoritos.
 
 ## Instalação
 
@@ -9,13 +9,13 @@ Antes de começar, certifique-se de ter o [Node.js](https://nodejs.org/) instala
 1. **Clone o repositório:**
 ```bash
 - $ git clone https://github.com/gabrielAnacletoo/ProjetoModulo3
-
+```bash
 2. **Vá para o repositório Back-end:**
 - $ cd Projeto modulo 3
--
+```bash
 3. **Instale as dependencias**
 - $ npm install
--
+```bash
 4. **Rode a aplicação**
 - $ npm run start:dev
 
