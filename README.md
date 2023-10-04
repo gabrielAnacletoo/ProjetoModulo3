@@ -38,17 +38,16 @@ Antes de começar, certifique-se de ter o [Node.js](https://nodejs.org/) instala
 ```bash
 📚 Aqui estão as estrelas do show, as dependências que fazem tudo funcionar:
 
-- **bcrypt**: Para deixar as senhas seguras e tranquilas.
-- **dotenv**: Para quando você precisa de um ambiente mais discreto.
-- **express**: O motor por trás do seu servidor web, dando vida às suas rotas.
-- **jsonwebtoken**: Porque às vezes é bom ter um passaporte digital.
-- **mongoose**: Conectando você ao MongoDB.
-- **mongoose-paginate-v2**: Para fazer aquela paginação com estilo.
-- **supertest**: Testando suas API com elegância.
-- **tsup**: Dando um trato no TypeScript para o navegador.
-- **typescript**: mantendo código seguro.
-- **vitest**: Para realizar testes.
-- **yup**: Validando os dados de forma descomplicada.
+- [bcrypt](https://www.npmjs.com/package/bcrypt): Para deixar as senhas seguras e tranquilas.
+- [dotenv](https://www.npmjs.com/package/dotenv): Para quando você precisa de um ambiente mais discreto.
+- [express](https://expressjs.com/pt-br/): O motor por trás do seu servidor web, dando vida às suas rotas.
+- [jsonwebtoken](https://jwt.io/): Porque às vezes é bom ter um passaporte digital.
+- [mongoose](https://mongoosejs.com/): Conectando você ao MongoDB.
+- [mongoose-paginate-v2](https://www.npmjs.com/package/mongoose-paginate-v2): Para fazer aquela paginação com estilo.
+- [tsup](https://www.npmjs.com/package/tsup): Dando um trato no TypeScript para o navegador.
+- [typescript](https://www.typescriptlang.org/): mantendo código seguro.
+- [vitest](https://vitest.dev/): Para realizar testes.
+- [yup](https://www.npmjs.com/package/yup): Validando os dados de forma descomplicada.
 ```
 
 ## 🛣️ Rotas da API
