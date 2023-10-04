@@ -131,4 +131,4 @@ password: "senhanova123"
 
 ### Detalhes Adicionais
 - **Autor da Vaga:** [Gabriel Anacleto](https://www.linkedin.com/in/gabriel-anacletoo/)
-- **Contato:** [mailto:gabrielanacleto159@live.com](gabrielanacleto159@live.com)
+- **Contato:** gabrielanacleto159@live.com
