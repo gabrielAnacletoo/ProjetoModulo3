@@ -22,11 +22,11 @@ Antes de começar, certifique-se de ter o [Node.js](https://nodejs.org/) instala
 ```
 ## 👨‍💻 Entidades utilizadas no projeto
 ```bash
-- **Auth**: Auth cuida da autenticação da api.
-- **CitySearch**: Registra as pesquisas feitas em determinada cidade e tecnologia.
-- **Jobs**: É a entidade responsavel por criar as vagas.
-- **Technology**: Tecnology é a entidade usada para criar as tecnologias.
-- **User**: E por último a entidade de user que é responsavel pelo usuário.
+- $ Auth: Auth cuida da autenticação da api.
+- $ CitySearch: Registra as pesquisas feitas em determinada cidade e tecnologia.
+- $ Jobs: É a entidade responsavel por criar as vagas.
+- $ Technology: Tecnology é a entidade usada para criar as tecnologias.
+- $ User: E por último a entidade de user que é responsavel pelo usuário.
 ```
 
 ## 👨‍💻 Dependências Utilizadas
@@ -70,8 +70,8 @@ Antes de começar, certifique-se de ter o [Node.js](https://nodejs.org/) instala
 - **Corpo da Requisição**:
 ```javascript
 {
-"email": "fulano@ciclano.com.br",
-"password": "senha1234"
+email: "fulano@ciclano.com.br",
+password: "senha1234"
 }
 ```
 ### 🟢 POST /technology/register
