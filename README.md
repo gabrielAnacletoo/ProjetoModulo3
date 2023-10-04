@@ -38,10 +38,10 @@ Aqui estão as estrelas do show, as dependências que fazem tudo funcionar:
 ### POST /auth
 - **Descrição**: Faz o login e retornar um token.
 - **Corpo da Requisição**:
--{
+- {
 -	"email": "fulano@ciclano.com.br",
 -	"password": "senha1234"
--}
+- }
 ### POST /technology/register
 - **Descrição**: Cria uma tecnologia no bando de dados.
 - **Descrição**: Deve ser passado o ID.
