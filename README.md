@@ -69,49 +69,56 @@ Antes de começar, certifique-se de ter o [Node.js](https://nodejs.org/) instala
 - **Descrição**: Faz o login e retornar um token.
 - **Corpo da Requisição**:
 ```javascript
-- {
--	"email": "fulano@ciclano.com.br",
--	"password": "senha1234"
-- }
+{
+"email": "fulano@ciclano.com.br",
+"password": "senha1234"
+}
 ```
 ### 🟢 POST /technology/register
 - **Descrição**: Cria uma tecnologia no bando de dados.
 - **Descrição**: Deve ser passado o ID.
 - **Corpo da Requisição**:
-- {
--	"name": "React Native"
-- }
+```javascript
+{
+name: "React Native"
+}
+```
 ### 🟢 POST /user/favorites
 - **Descrição**: Adiciona uma vaga ao favoritos do usuário.
 - **Corpo da Requisição**:
-- {
-- 	"favorites": "6516d478d6c472b0832a28a9"
-- }
+```javascript
+{
+favorites: "6516d478d6c472b0832a28a9"
+}
+```
 ### 🟢 POST /jobs/register
 - **Descrição**: Cria uma vaga no bando de dados.
 - **Corpo da Requisição**:
-- {
-- "position" : "senior",
-- "salary" : "12800",
-- "jobcontract": "pj",
-- "localtype": "remoto",
-- "city" : "Fortaleza",
-- "technology": ["Algular", "Java"],
-- "website" : "www.indeed.com.br",
-- "company" : "Alpa Tech",
-- "companysize": "media",
-- "description" : "Desenvolvedor senior com experiencia",
-- "link" : "www.indeed.com.br/senior/vaga"
-- }
+```javascript
+{
+position: "senior",
+salary: "12800",
+jobcontract: "pj",
+localtype: "remoto",
+city: "Fortaleza",
+technology: ["Algular", "Java"],
+website: "www.indeed.com.br",
+company: "Alpa Tech",
+companysize: "media",
+description : "Desenvolvedor senior com experiencia",
+link : "www.indeed.com.br/senior/vaga"
+}
+```
 
 ### 🟡 PATH user/edit
 - **Descrição**: Atualiza o nome e o password do usuário, Precisa estar válido ja que o id do usuário vem do token.
 - **Corpo da Requisição**:
-- {
--	"name": "ciclano",
--	"password": "senhanova123"
-- }
-
+ ```javascript
+{
+name: "ciclano",
+password: "senhanova123"
+}
+```
 ### 🔴 DELETE /user/favorites/remove/:id
 - **Descrição**: Remove uma vaga específica dos favoritos.
 - **Parâmetros**:
