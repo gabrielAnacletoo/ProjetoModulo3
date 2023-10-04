@@ -20,9 +20,17 @@ Antes de começar, certifique-se de ter o [Node.js](https://nodejs.org/) instala
 # Rode a aplicação
 - $ npm run start:dev
 ```
+## 👨‍💻 Entidades utilizadas no projeto
+```bash
+- **Auth**: Auth cuida da autenticação da api.
+- **CitySearch**: Registra as pesquisas feitas em determinada cidade e tecnologia.
+- **Jobs**: É a entidade responsavel por criar as vagas.
+- **Technology**: Tecnology é a entidade usada para criar as tecnologias.
+- **User**: E por último a entidade de user que é responsavel pelo usuário.
+```
 
 ## 👨‍💻 Dependências Utilizadas
-
+```bash
 📚 Aqui estão as estrelas do show, as dependências que fazem tudo funcionar:
 
 - **bcrypt**: Para deixar as senhas seguras e tranquilas.
@@ -36,6 +44,7 @@ Antes de começar, certifique-se de ter o [Node.js](https://nodejs.org/) instala
 - **typescript**: mantendo código seguro.
 - **vitest**: Para realizar testes.
 - **yup**: Validando os dados de forma descomplicada.
+```
 
 ## 🛣️ Rotas da API
 
