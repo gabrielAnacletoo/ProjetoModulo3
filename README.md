@@ -1,5 +1,6 @@
 # 🚀 API de Busca de Vagas de Emprego 
-
+- Api para busca de vagas de emprego, é possivel cadastrar e buscar vagas,
+- Além de cadastrar usuários, editar e adicionar vagas aos favoritos.
 ## 👨‍💻 Dependências Utilizadas
 
 📚 Aqui estão as estrelas do show, as dependências que fazem tudo funcionar:
