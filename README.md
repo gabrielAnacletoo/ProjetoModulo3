@@ -75,13 +75,13 @@ Aqui estão as estrelas do show, as dependências que fazem tudo funcionar:
 ### PATH user/edit
 - **Descrição**: Atualiza o nome e o password do usuário, Precisa estar válido ja que o id do usuário vem do token.
 - **Corpo da Requisição**:
--{
+- {
 -	"name": "ciclano",
 -	"password": "senhanova123"
--}
+- }
 
 ### DELETE /user/favorites/remove/:id
 - **Descrição**: Remove uma vaga específica dos favoritos.
 - **Parâmetros**:
-  - `id`: Identificador único da vaga.
+- `id`: Identificador único da vaga.
 - **Corpo da Requisição**:
