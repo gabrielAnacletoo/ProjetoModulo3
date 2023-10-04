@@ -37,16 +37,16 @@ Antes de começar, certifique-se de ter o [Node.js](https://nodejs.org/) instala
 ## 👨‍💻 Dependências Utilizadas
 📚 Aqui estão as estrelas do show, as dependências que fazem tudo funcionar:
 
-- [bcrypt](https://www.npmjs.com/package/bcrypt): Para deixar as senhas seguras e tranquilas.
-- [dotenv](https://www.npmjs.com/package/dotenv): Para quando você precisa de um ambiente mais discreto.
-- [express](https://expressjs.com/pt-br/): O motor por trás do seu servidor web, dando vida às suas rotas.
-- [jsonwebtoken](https://jwt.io/): Porque às vezes é bom ter um passaporte digital.
-- [mongoose](https://mongoosejs.com/): Conectando você ao MongoDB.
-- [mongoose-paginate-v2](https://www.npmjs.com/package/mongoose-paginate-v2): Para fazer aquela paginação com estilo.
-- [tsup](https://www.npmjs.com/package/tsup): Dando um trato no TypeScript para o navegador.
-- [typescript](https://www.typescriptlang.org/): mantendo código seguro.
-- [vitest](https://vitest.dev/): Para realizar testes.
-- [yup](https://www.npmjs.com/package/yup): Validando os dados de forma descomplicada.
+- [bcrypt](https://www.npmjs.com/package/bcrypt): 5.1.1
+- [dotenv](https://www.npmjs.com/package/dotenv): 16.3.1
+- [express](https://expressjs.com/pt-br/): 4.18.2
+- [jsonwebtoken](https://jwt.io/): 9.0.2
+- [mongoose](https://mongoosejs.com/): 7.5.2
+- [mongoose-paginate-v2](https://www.npmjs.com/package/mongoose-paginate-v2): 1.7.4
+- [tsup](https://www.npmjs.com/package/tsup): 7.2.0
+- [typescript](https://www.typescriptlang.org/): 5.2.2
+- [vitest](https://vitest.dev/): 0.34.5
+- [yup](https://www.npmjs.com/package/yup): 1.2.0
 
 
 ## 🛣️ Rotas da API
