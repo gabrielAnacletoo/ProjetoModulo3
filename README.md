@@ -13,7 +13,9 @@ Antes de começar, certifique-se de ter o [Node.js](https://nodejs.org/) instala
 - $ cd Projeto modulo 3
 
 # Instale as dependencias
-- $ npm install
+- $ npm i typescript tsx dotenv bcrypt jsonwebtoken mongoose-paginate-v2 tsup vitest yup mongoose express -D
+- $ npx tsc --init 
+- $ npm run build 
 
 # Rode a aplicação
 - $ npm run start:dev
