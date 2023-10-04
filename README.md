@@ -46,9 +46,9 @@ Aqui estão as estrelas do show, as dependências que fazem tudo funcionar:
 - **Descrição**: Cria uma tecnologia no bando de dados.
 - **Descrição**: Deve ser passado o ID.
 - **Corpo da Requisição**:
--{
+- {
 -	"name": "React Native"
--}
+- }
 ### POST /user/favorites
 - **Descrição**: Adiciona uma vaga ao favoritos do usuário.
 - **Corpo da Requisição**:
