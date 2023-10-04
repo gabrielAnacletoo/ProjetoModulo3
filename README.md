@@ -58,20 +58,19 @@ Aqui estão as estrelas do show, as dependências que fazem tudo funcionar:
 ### POST /jobs/register
 - **Descrição**: Cria uma vaga no bando de dados.
 - **Corpo da Requisição**:
--{
--"position" : "senior",
--"salary" : "12800",
--"jobcontract": "pj",
--"localtype": "remoto",
--"city" : "Fortaleza",
--"technology": ["Algular", "Java"],
--"website" : "www.indeed.com.br",
--"company" : "Alpa Tech",
--"companysize": "media",
--"description" : "Desenvolvedor senior com experiencia",
--"link" : "www.indeed.com.br/senior/vaga"
-
-}
+- {
+- "position" : "senior",
+- "salary" : "12800",
+- "jobcontract": "pj",
+- "localtype": "remoto",
+- "city" : "Fortaleza",
+- "technology": ["Algular", "Java"],
+- "website" : "www.indeed.com.br",
+- "company" : "Alpa Tech",
+- "companysize": "media",
+- "description" : "Desenvolvedor senior com experiencia",
+- "link" : "www.indeed.com.br/senior/vaga"
+- }
 
 ### PATH user/edit
 - **Descrição**: Atualiza o nome e o password do usuário, Precisa estar válido ja que o id do usuário vem do token.
