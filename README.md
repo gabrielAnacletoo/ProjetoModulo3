@@ -130,5 +130,5 @@ password: "senhanova123"
 - `id`: Identificador único da vaga.
 
 ### Detalhes Adicionais
-- **Autor da Vaga:** [Gabriel Anacleto]
-- **Contato:** [gabrielanacleto159@live.com]
+- **Autor da Vaga:** [Gabriel Anacleto](https://www.linkedin.com/in/gabriel-anacletoo/)
+- **Contato:** [gabrielanacleto159@live.com](gabrielanacleto159@live.com)
