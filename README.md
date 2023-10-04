@@ -2,7 +2,6 @@
 - Api para busca de vagas de emprego, é possivel cadastrar e buscar vagas,
 - Além de cadastrar usuários, editar e adicionar vagas aos favoritos.
 
-- 
 ## Instalação
 
 Antes de começar, certifique-se de ter o [Node.js](https://nodejs.org/) instalado em sua máquina.
