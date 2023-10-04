@@ -35,7 +35,7 @@ Antes de começar, certifique-se de ter o [Node.js](https://nodejs.org/) instala
 ```
 
 ## 👨‍💻 Dependências Utilizadas
-```bash
+```markdown
 📚 Aqui estão as estrelas do show, as dependências que fazem tudo funcionar:
 
 - [bcrypt](https://www.npmjs.com/package/bcrypt): Para deixar as senhas seguras e tranquilas.
