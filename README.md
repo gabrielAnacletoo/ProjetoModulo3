@@ -68,12 +68,12 @@ Antes de começar, certifique-se de ter o [Node.js](https://nodejs.org/) instala
 ### 🟢 POST /auth
 - **Descrição**: Faz o login e retornar um token.
 - **Corpo da Requisição**:
-- ```javascript
+- <script>
 - {
 -	"email": "fulano@ciclano.com.br",
 -	"password": "senha1234"
 - }
-- ```
+- </script>
 ### 🟢 POST /technology/register
 - **Descrição**: Cria uma tecnologia no bando de dados.
 - **Descrição**: Deve ser passado o ID.
