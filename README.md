@@ -1,5 +1,5 @@
 # 🚀 API de Busca de Vagas de Emprego 
- Bem vindo(a)!
+ Bem vindo(a)!<br>
  Descubra empregos dos sonhos! Nossa API permite busca avançada por salário, cidade, contrato, tecnologia e mais. 
  Cadastre-se, faça login seguro   com JWT, favorite vagas, e aproveite a paginação fácil.
 
