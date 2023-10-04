@@ -35,7 +35,6 @@ Antes de começar, certifique-se de ter o [Node.js](https://nodejs.org/) instala
 ```
 
 ## 👨‍💻 Dependências Utilizadas
-```markdown
 📚 Aqui estão as estrelas do show, as dependências que fazem tudo funcionar:
 
 - [bcrypt](https://www.npmjs.com/package/bcrypt): Para deixar as senhas seguras e tranquilas.
@@ -48,7 +47,7 @@ Antes de começar, certifique-se de ter o [Node.js](https://nodejs.org/) instala
 - [typescript](https://www.typescriptlang.org/): mantendo código seguro.
 - [vitest](https://vitest.dev/): Para realizar testes.
 - [yup](https://www.npmjs.com/package/yup): Validando os dados de forma descomplicada.
-```
+
 
 ## 🛣️ Rotas da API
 
