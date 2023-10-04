@@ -128,4 +128,7 @@ password: "senhanova123"
 - **Descrição**: Remove uma vaga específica dos favoritos.
 - **Parâmetros**:
 - `id`: Identificador único da vaga.
-- **Corpo da Requisição**:
+
+### Detalhes Adicionais
+- **Autor da Vaga:** [Gabriel Anacleto]
+- **Contato:** [gabrielanacleto159@live.com]
