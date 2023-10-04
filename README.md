@@ -1,6 +1,16 @@
 # 🚀 API de Busca de Vagas de Emprego 
 - Api para busca de vagas de emprego, é possivel cadastrar e buscar vagas,
 - Além de cadastrar usuários, editar e adicionar vagas aos favoritos.
+
+- 
+## Instalação
+
+Antes de começar, certifique-se de ter o [Node.js](https://nodejs.org/) instalado em sua máquina.
+
+1. **Clone o repositório:**
+   ```bash
+   git clone https://seurepositorio.com/vagas-api.git
+   
 ## 👨‍💻 Dependências Utilizadas
 
 📚 Aqui estão as estrelas do show, as dependências que fazem tudo funcionar:
