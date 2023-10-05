@@ -1,7 +1,9 @@
 "use strict";
+var __create = Object.create;
 var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
+var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __export = (target, all) => {
   for (var name in all)
@@ -15,6 +17,14 @@ var __copyProps = (to, from, except, desc) => {
   }
   return to;
 };
+var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
+  // If the importer is in node compatibility mode or this is not an ESM
+  // file that has been converted to a CommonJS file using a Babel-
+  // compatible transform (i.e. "__esModule" has not been set), then set
+  // "default" to the CommonJS "module.exports" for node compatibility.
+  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
+  mod
+));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 var __async = (__this, __arguments, generator) => {
   return new Promise((resolve, reject) => {
@@ -43,96 +53,129 @@ __export(JobsService_exports, {
   JobService: () => JobService
 });
 module.exports = __toCommonJS(JobsService_exports);
+
+// src/Utils/StatusCode/StatusCode.ts
+var STATUS_CODE = {
+  OK: 200,
+  BAD_REQUEST: 400,
+  NO_CONTENT: 204,
+  NON_AUTHORIZED: 401,
+  NOT_FOUND: 404,
+  CREATED: 201,
+  INTERNAL_SERVER_ERROR: 500
+};
+
+// src/Utils/MakeErrors/MakeErrors.ts
+function MakeErrors(message, status) {
+  return {
+    error: true,
+    message,
+    status
+  };
+}
+
+// src/App/Jobs/Service/JobsService.ts
+var import_jsonwebtoken = __toESM(require("jsonwebtoken"));
 var JobService = class {
-  constructor(Repository, TechRepository, cityRepository, citysearchRepository, TechSearchRepository) {
+  constructor(Repository, TechRepository, citysearchRepository, userRepository) {
     this.Repository = Repository;
     this.TechRepository = TechRepository;
-    this.cityRepository = cityRepository;
     this.citysearchRepository = citysearchRepository;
-    this.TechSearchRepository = TechSearchRepository;
+    this.userRepository = userRepository;
   }
   CreateFromService(data) {
     return __async(this, null, function* () {
       try {
         const CretedJob = yield this.Repository.Create(data);
         if (!CretedJob) {
-          return { error: "This position cannot be created", status: 400 };
+          return MakeErrors("Essa vaga n\xE3o pode ser criada, preencha corretamente", STATUS_CODE.BAD_REQUEST);
         }
         return CretedJob;
       } catch (error) {
-        return { error: "Internal server error", status: 500 };
+        return MakeErrors(error.message, STATUS_CODE.INTERNAL_SERVER_ERROR);
       }
     });
   }
-  FilterFromService(filter) {
+  FilterFromService(filter, token) {
     return __async(this, null, function* () {
+      const [, tokenNovo] = token.split(" ");
+      const decoded = import_jsonwebtoken.default.decode(tokenNovo);
+      const { _id } = decoded._doc;
       try {
-        if (filter.cityId && filter.technologyId) {
-          const CityConsult = yield this.cityRepository.FindById(filter.cityId);
-          if (!CityConsult) {
-            return { error: "City not found", status: 404 };
+        const Result = yield this.Repository.Filter(filter);
+        if (filter.city && filter.technology) {
+          const ExistingSearch = yield this.citysearchRepository.FindByCityAndTech(filter.city, filter.technology);
+          if (ExistingSearch) {
+            const ResultSearch = yield this.citysearchRepository.IncrementCount(ExistingSearch._id.toString());
+            return {
+              Incrementos: ResultSearch,
+              Consulta: Result,
+              Message: "Registros existentes incrementados com sucesso"
+            };
+          } else {
+            const NewSearch = { city: filter.city, technology: filter.technology };
+            const ResultNewSearch = yield this.citysearchRepository.Create(NewSearch);
+            return {
+              Incrementos: ResultNewSearch,
+              Consulta: `N\xE3o existem vagas em ${filter.city} com tecnlogia ${filter.technology}.`,
+              Message: "Registro criado."
+            };
           }
-          const TechConsult = yield this.TechRepository.FindById(filter.technologyId);
-          if (!TechConsult) {
-            return { error: "Tecnology not found", status: 404 };
+        }
+        if (filter.technology) {
+          let IncrementedTechnology = [];
+          const TechFind = yield this.TechRepository.FindByName(filter.technology);
+          if (!TechFind) {
+            return MakeErrors("Tecnologia n\xE3o encontrada", STATUS_CODE.NOT_FOUND);
           }
-          if (CityConsult && TechConsult) {
-            const existingSearch = yield this.citysearchRepository.FindByCityAndTechIds(filter.cityId, filter.technologyId);
-            const existingTech = yield this.TechSearchRepository.FindByTechIds(filter.technologyId);
-            if (existingSearch && existingTech) {
-              const existingSearchID = existingSearch._id.toString();
-              const existingTechID = existingTech._id.toString();
-              const IncrementedCity = yield this.citysearchRepository.IncrementCount(existingSearchID);
-              const IncrementedTechnology = yield this.TechSearchRepository.IncrementCount(existingTechID);
-              return {
-                results: yield this.Repository.Filter(filter),
-                message: "Registros existentes incrementados com sucesso"
-              };
-            } else {
-              const newSearch = { cityId: filter.cityId, technologyId: filter.technologyId };
-              const newTechSearch = { technologyId: filter.technologyId };
-              yield this.citysearchRepository.Create(newSearch);
-              yield this.TechSearchRepository.Create(newTechSearch);
-              return {
-                result: newSearch,
-                newTechSearch,
-                results: yield this.Repository.Filter(filter),
-                message: "Novos registros criados com sucesso"
-              };
+          if (TechFind) {
+            for (const tech of TechFind) {
+              const existingTechID = tech._id.toString();
+              const incremented = yield this.TechRepository.IncrementCount(existingTechID);
+              IncrementedTechnology.push(incremented);
             }
-          }
-        } else {
-          if (filter.technologyId) {
-            console.log("Ids na service ==> ", filter.cityId, filter.technologyId);
-            const TechConsult = yield this.TechRepository.FindById(filter.technologyId);
-            if (!TechConsult) {
-              return { error: "Tecnology not found", status: 404 };
+            if (Result.length === 0) {
+              return { Incrementos: IncrementedTechnology, Consulta: `N\xE3o existem vagas para ${filter.technology}` };
             }
-            if (TechConsult) {
-              const existingTech = yield this.TechRepository.FindById(filter.technologyId);
-              if (existingTech) {
-                const existingTechID = existingTech._id.toString();
-                const IncrementedTechnology = yield this.TechRepository.IncrementCount(existingTechID);
-                return {
-                  result: IncrementedTechnology,
-                  results: yield this.Repository.Filter(filter),
-                  message: "Registros existentes incrementados com sucesso"
-                };
-              } else {
-                const newTechSearch = { technologyId: filter.technologyId };
-                yield this.TechSearchRepository.Create(newTechSearch);
-                return {
-                  result: newTechSearch,
-                  results: yield this.Repository.Filter(filter),
-                  message: "Novos registros criados com sucesso"
-                };
-              }
+            return {
+              Incremento: IncrementedTechnology,
+              Consulta: Result
+            };
+          }
+        }
+        const valuesToSave = [];
+        for (const key in filter) {
+          if (filter.hasOwnProperty(key)) {
+            const value = filter[key];
+            if (typeof value === "string") {
+              valuesToSave.push(value);
             }
           }
         }
-        return yield this.Repository.Filter(filter);
+        const SaveHistory = yield this.userRepository.AddHistory(valuesToSave, _id);
+        return Result;
       } catch (error) {
-        return { error: "Internal Server Error", status: 500 };
+        return MakeErrors(error.message, STATUS_CODE.INTERNAL_SERVER_ERROR);
+      }
+    });
+  }
+  Pagination(page, limit) {
+    return __async(this, null, function* () {
+      try {
+        const result = yield this.Repository.Pagination(page, limit);
+        return result;
+      } catch (error) {
+        return MakeErrors(error.message, STATUS_CODE.INTERNAL_SERVER_ERROR);
+      }
+    });
+  }
+  FindAll() {
+    return __async(this, null, function* () {
+      try {
+        const result = yield this.Repository.FindAll();
+        return result;
+      } catch (error) {
+        return MakeErrors(error.message, STATUS_CODE.INTERNAL_SERVER_ERROR);
       }
     });
   }

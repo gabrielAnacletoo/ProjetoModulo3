@@ -19,10 +19,6 @@ var __spreadValues = (a, b) => {
     }
   return a;
 };
-var __export = (target, all) => {
-  for (var name in all)
-    __defProp(target, name, { get: all[name], enumerable: true });
-};
 var __copyProps = (to, from, except, desc) => {
   if (from && typeof from === "object" || typeof from === "function") {
     for (let key of __getOwnPropNames(from))
@@ -39,7 +35,6 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
   mod
 ));
-var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 var __async = (__this, __arguments, generator) => {
   return new Promise((resolve, reject) => {
     var fulfilled = (value) => {
@@ -61,12 +56,10 @@ var __async = (__this, __arguments, generator) => {
   });
 };
 
+// src/App/Auth/Service/Auth.spec.ts
+var import_vitest = require("vitest");
+
 // src/App/Auth/Service/AuthService.ts
-var AuthService_exports = {};
-__export(AuthService_exports, {
-  AuthService: () => AuthService
-});
-module.exports = __toCommonJS(AuthService_exports);
 var import_jsonwebtoken = __toESM(require("jsonwebtoken"));
 
 // src/Utils/Bcrypt.ts
@@ -128,7 +121,68 @@ var AuthService = class {
     });
   }
 };
-// Annotate the CommonJS export names for ESM import in node:
-0 && (module.exports = {
-  AuthService
+
+// src/App/Auth/Service/Auth.spec.ts
+var import_bcrypt2 = __toESM(require("bcrypt"));
+var import_jsonwebtoken2 = __toESM(require("jsonwebtoken"));
+var FakeMockRepository = {
+  FindByEmail: import_vitest.vi.fn(),
+  FindById: import_vitest.vi.fn(),
+  Create: import_vitest.vi.fn(),
+  FindAll: import_vitest.vi.fn()
+};
+var sut = new AuthService(FakeMockRepository);
+(0, import_vitest.describe)("AuthService", () => {
+  (0, import_vitest.it)("should be able to return an error if email not found", () => __async(exports, null, function* () {
+    (0, import_vitest.beforeEach)(() => {
+      import_vitest.vi.clearAllMocks();
+    });
+    const MockLogin = {
+      email: "gah@anacleto.com.br",
+      password: "123456"
+    };
+    import_vitest.vi.spyOn(FakeMockRepository, "FindByEmail").mockResolvedValue(null);
+    const result = yield sut.Login(MockLogin);
+    const expected = MakeErrors("E-mail ou password incorretos", STATUS_CODE.NON_AUTHORIZED);
+    (0, import_vitest.expect)(result).toStrictEqual(expected);
+  }));
+  (0, import_vitest.it)("should return an error if the password is wrong", () => __async(exports, null, function* () {
+    const MockLogin = {
+      email: "gah@anacleto.com.br",
+      password: "123456"
+    };
+    const ReturnMock = {
+      name: "Gabriel",
+      _id: 1,
+      password: "senharetornada"
+    };
+    import_vitest.vi.spyOn(FakeMockRepository, "FindByEmail").mockResolvedValue(ReturnMock);
+    import_vitest.vi.spyOn(import_bcrypt2.default, "compareSync").mockReturnValueOnce(false);
+    const result = yield sut.Login(MockLogin);
+    const expected = MakeErrors("E-mail ou password incorretos", STATUS_CODE.NON_AUTHORIZED);
+    (0, import_vitest.expect)(result).toStrictEqual(expected);
+  }));
+  (0, import_vitest.it)("if email and password are validated it should return a token", () => __async(exports, null, function* () {
+    const MockLogin = { email: "ga@anacleto.com.br", password: "senha123" };
+    const MockReturn = {
+      name: "Gabriel",
+      _id: 1,
+      password: "SenhaEncriptada",
+      email: "ga@anacleto.com.br"
+    };
+    import_vitest.vi.spyOn(FakeMockRepository, "FindByEmail").mockResolvedValue(MockReturn);
+    import_vitest.vi.spyOn(import_bcrypt2.default, "compareSync").mockReturnValue(true);
+    import_vitest.vi.spyOn(import_jsonwebtoken2.default, "sign").mockReturnValue("Tokengigante");
+    const result = yield sut.Login(MockLogin);
+    const expected = { token: "Tokengigante", name: "Gabriel", email: "ga@anacleto.com.br" };
+    (0, import_vitest.expect)(result).toStrictEqual(expected);
+  }));
+  (0, import_vitest.it)("should return an error on the server if it doesn't pass within the try", () => __async(exports, null, function* () {
+    const MockLogin = { email: "ga@anacleto.com.br", password: "senha123" };
+    const MockError = new Error("Something went wrong");
+    import_vitest.vi.spyOn(FakeMockRepository, "FindByEmail").mockRejectedValue(MockError);
+    const result = yield sut.Login(MockLogin);
+    const expected = MakeErrors(MockError.message, STATUS_CODE.INTERNAL_SERVER_ERROR);
+    (0, import_vitest.expect)(result).toStrictEqual(expected);
+  }));
 });

@@ -54,14 +54,14 @@ __export(UserController_exports, {
 });
 module.exports = __toCommonJS(UserController_exports);
 
-// src/Utils/Validation/UserSchemaValidation.ts
+// src/Utils/Validation/User/UserSchemaValidation.ts
 var yup = __toESM(require("yup"));
 var UserSchemaValidation = class {
   static isValid(data) {
     return __async(this, null, function* () {
       const userSchema = yup.object().shape({
-        name: yup.string().required(),
-        email: yup.string().email().required(),
+        name: yup.string().notOneOf(["test", "teste", "tester", "admin", "user", "usuario", "adm", "user123", "user321"]).required(),
+        email: yup.string().email().test("no-test-email", 'Email cannot contain "test" or "teste"', (value) => !(value && (value.includes("test") || value.includes("teste")))).required(),
         password: yup.string().required()
       });
       try {
@@ -69,6 +69,36 @@ var UserSchemaValidation = class {
         return { message: "Success", status: 200 };
       } catch (error) {
         return { error: "you need to fill in all the fields", status: 404 };
+      }
+    });
+  }
+};
+
+// src/Utils/StatusCode/StatusCode.ts
+var STATUS_CODE = {
+  OK: 200,
+  BAD_REQUEST: 400,
+  NO_CONTENT: 204,
+  NON_AUTHORIZED: 401,
+  NOT_FOUND: 404,
+  CREATED: 201,
+  INTERNAL_SERVER_ERROR: 500
+};
+
+// src/Utils/Validation/User/EditSchemaValidation.ts
+var yup2 = __toESM(require("yup"));
+var EditSchemaValidation = class {
+  static isValid(data) {
+    return __async(this, null, function* () {
+      const userSchema = yup2.object().shape({
+        name: yup2.string().required(),
+        password: yup2.string().required()
+      });
+      try {
+        yield userSchema.validate(data);
+        return { message: "Usu\xE1rio editado com sucesso", status: 200 };
+      } catch (error) {
+        return { error: "Erro interno, preencha todos os campos", status: 500 };
       }
     });
   }
@@ -87,10 +117,61 @@ var UserController = class {
         return res.status(bodyValidation.status).json(bodyValidation.error);
       }
       try {
-        const user = yield this.service.CreateFromService(body);
-        return res.status(201).json(user);
+        const User = yield this.service.CreateFromService(body);
+        return res.status(STATUS_CODE.CREATED).json(User);
       } catch (error) {
-        return res.status(400).json({ error: "Preencha os dados corretamente" });
+        return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({ error: "Erro interno no servidor" });
+      }
+    });
+  }
+  EditProfile(req, res) {
+    return __async(this, null, function* () {
+      const { body } = req;
+      const token = req.headers.authorization;
+      const bodyValidation = yield EditSchemaValidation.isValid(body);
+      if (bodyValidation.error) {
+        return res.status(bodyValidation.status).json(bodyValidation.error);
+      }
+      try {
+        const EditUser = yield this.service.EditProfile(body, token);
+        return res.status(STATUS_CODE.OK).json(EditUser);
+      } catch (error) {
+        return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({ error: "Erro interno no servidor" });
+      }
+    });
+  }
+  AddFavorites(req, res) {
+    return __async(this, null, function* () {
+      const favorite = req.body.favorites;
+      const token = req.headers.authorization;
+      try {
+        const Favorites = yield this.service.AddFavorites(favorite, token);
+        return res.status(STATUS_CODE.CREATED).json(Favorites);
+      } catch (error) {
+        return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({ error: "Erro interno no servidor" });
+      }
+    });
+  }
+  RemoveFavorite(req, res) {
+    return __async(this, null, function* () {
+      const favoriteToRemove = req.params.id;
+      const token = req.headers.authorization;
+      try {
+        const RemovedFavorite = yield this.service.RemoveFavorite(favoriteToRemove, token);
+        return res.status(STATUS_CODE.OK).json(RemovedFavorite);
+      } catch (error) {
+        return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({ error: "Erro interno no servidor" });
+      }
+    });
+  }
+  InfoUser(req, res) {
+    return __async(this, null, function* () {
+      const token = req.headers.authorization;
+      try {
+        const user = yield this.service.InfoUser(token);
+        return res.status(STATUS_CODE.OK).json(user);
+      } catch (error) {
+        return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({ error: "Erro interno no servidor" });
       }
     });
   }

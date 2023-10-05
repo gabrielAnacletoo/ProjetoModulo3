@@ -43,50 +43,46 @@ __export(CitySearchService_exports, {
   CitySearchService: () => CitySearchService
 });
 module.exports = __toCommonJS(CitySearchService_exports);
+
+// src/Utils/MakeErrors/MakeErrors.ts
+function MakeErrors(message, status) {
+  return {
+    error: true,
+    message,
+    status
+  };
+}
+
+// src/Utils/StatusCode/StatusCode.ts
+var STATUS_CODE = {
+  OK: 200,
+  BAD_REQUEST: 400,
+  NO_CONTENT: 204,
+  NON_AUTHORIZED: 401,
+  NOT_FOUND: 404,
+  CREATED: 201,
+  INTERNAL_SERVER_ERROR: 500
+};
+
+// src/App/CitySearch/Service/CitySearchService.ts
 var CitySearchService = class {
-  constructor(CitySearchrepository, Cityrepository, TechRepository) {
+  constructor(CitySearchrepository, TechRepository) {
     this.CitySearchrepository = CitySearchrepository;
-    this.Cityrepository = Cityrepository;
     this.TechRepository = TechRepository;
-  }
-  FilterFromService(cityId, technologyId) {
-    return __async(this, null, function* () {
-      try {
-        const CityConsult = yield this.Cityrepository.FindByName(cityId);
-        if (!CityConsult) {
-          return { error: "Cidade n\xE3o encontrada", status: 404 };
-        }
-        const CityConsultString = CityConsult._id.toString();
-        const TechConsult = yield this.TechRepository.FindByName(technologyId);
-        if (!TechConsult) {
-          return { error: "Tecnologia n\xE3o encontrada", status: 404 };
-        }
-        const TechConsultString = TechConsult._id.toString();
-        const existingSearch = yield this.CitySearchrepository.FindByCityAndTechIds(CityConsultString, TechConsultString);
-        if (existingSearch) {
-          const existingSearchID = existingSearch._id.toString();
-          const Incremented = yield this.CitySearchrepository.IncrementCount(existingSearchID);
-          return { result: Incremented, message: "Registro existente incrementado com sucesso" };
-        } else {
-          const newSearch = {
-            cityId: CityConsultString,
-            technologyId: TechConsultString
-          };
-          yield this.CitySearchrepository.Create(newSearch);
-          return { result: newSearch, message: "Novo registro criado com sucesso" };
-        }
-      } catch (error) {
-        return { error: "Internal Server Error", status: 500 };
-      }
-    });
   }
   FindTopFiveLocal() {
     return __async(this, null, function* () {
       try {
-        const Result = yield this.CitySearchrepository.FindTopFivelocal();
-        return Result;
+        const technology = yield this.TechRepository.FindTopFiveGlobal();
+        if (technology) {
+          const technologyName = technology[0].name;
+          if (technologyName) {
+            const Result = yield this.CitySearchrepository.FindTopFivelocal(technologyName);
+            return { Top5Global: technology, Top5PorLocal: Result };
+          }
+        }
       } catch (error) {
-        return { error: "Internal Server Error", status: 500 };
+        return MakeErrors(error.message, STATUS_CODE.INTERNAL_SERVER_ERROR);
       }
     });
   }

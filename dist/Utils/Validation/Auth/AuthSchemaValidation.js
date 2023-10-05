@@ -47,25 +47,12 @@ var __async = (__this, __arguments, generator) => {
   });
 };
 
-// src/App/Auth/Controller/AuthController.ts
-var AuthController_exports = {};
-__export(AuthController_exports, {
-  AuthController: () => AuthController
-});
-module.exports = __toCommonJS(AuthController_exports);
-
-// src/Utils/StatusCode/StatusCode.ts
-var STATUS_CODE = {
-  OK: 200,
-  BAD_REQUEST: 400,
-  NO_CONTENT: 204,
-  NON_AUTHORIZED: 401,
-  NOT_FOUND: 404,
-  CREATED: 201,
-  INTERNAL_SERVER_ERROR: 500
-};
-
 // src/Utils/Validation/Auth/AuthSchemaValidation.ts
+var AuthSchemaValidation_exports = {};
+__export(AuthSchemaValidation_exports, {
+  AuthSchemaValidation: () => AuthSchemaValidation
+});
+module.exports = __toCommonJS(AuthSchemaValidation_exports);
 var yup = __toESM(require("yup"));
 var AuthSchemaValidation = class {
   static isValid(data) {
@@ -83,32 +70,7 @@ var AuthSchemaValidation = class {
     });
   }
 };
-
-// src/App/Auth/Controller/AuthController.ts
-var AuthController = class {
-  constructor(service) {
-    this.service = service;
-  }
-  LoginController(req, res) {
-    return __async(this, null, function* () {
-      try {
-        const { body } = req;
-        const bodyValidation = AuthSchemaValidation.isValid(body);
-        if ("error" in bodyValidation) {
-          return res.status(STATUS_CODE.BAD_REQUEST).json(bodyValidation.error);
-        }
-        const result = yield this.service.Login(body);
-        if ("error" in result) {
-          return res.status(STATUS_CODE.NON_AUTHORIZED).json(result.error);
-        }
-        return res.status(STATUS_CODE.OK).json(result);
-      } catch (error) {
-        return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({ error: "Internal Server Error" });
-      }
-    });
-  }
-};
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
-  AuthController
+  AuthSchemaValidation
 });

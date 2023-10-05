@@ -43,6 +43,28 @@ __export(TechnologyService_exports, {
   TechnologyService: () => TechnologyService
 });
 module.exports = __toCommonJS(TechnologyService_exports);
+
+// src/Utils/MakeErrors/MakeErrors.ts
+function MakeErrors(message, status) {
+  return {
+    error: true,
+    message,
+    status
+  };
+}
+
+// src/Utils/StatusCode/StatusCode.ts
+var STATUS_CODE = {
+  OK: 200,
+  BAD_REQUEST: 400,
+  NO_CONTENT: 204,
+  NON_AUTHORIZED: 401,
+  NOT_FOUND: 404,
+  CREATED: 201,
+  INTERNAL_SERVER_ERROR: 500
+};
+
+// src/App/Technology/Service/TechnologyService.ts
 var TechnologyService = class {
   constructor(repository) {
     this.repository = repository;
@@ -50,33 +72,27 @@ var TechnologyService = class {
   CreateFromService(data) {
     return __async(this, null, function* () {
       try {
+        const FoundTech = yield this.repository.FindByName(data.name);
+        if (FoundTech) {
+          return MakeErrors(`Tecnologia ${data.name} j\xE1 existe.`, STATUS_CODE.BAD_REQUEST);
+        }
         const TechnologyCreated = yield this.repository.Create(data);
         if (!TechnologyCreated) {
-          return { error: "Technology cannot be created", status: 400 };
+          return MakeErrors("Tecnologia n\xE3o foi criada, preencha corretamente", STATUS_CODE.BAD_REQUEST);
         }
         return TechnologyCreated;
       } catch (error) {
-        return { error: "Internal server error", status: 500 };
+        return MakeErrors(error.message, STATUS_CODE.INTERNAL_SERVER_ERROR);
       }
     });
   }
   FindAllFromService() {
     return __async(this, null, function* () {
       try {
-        const Result = yield this.repository.FindAll();
-        return Result;
+        const result = yield this.repository.FindAll();
+        return result;
       } catch (error) {
-        return { error: "Internal Server Error", status: 500 };
-      }
-    });
-  }
-  FindTopFiveGlobal() {
-    return __async(this, null, function* () {
-      try {
-        const Result = yield this.repository.FindTopFiveGlobal();
-        return Result;
-      } catch (error) {
-        return { error: "Internal Server Error", status: 500 };
+        return MakeErrors(error.message, STATUS_CODE.INTERNAL_SERVER_ERROR);
       }
     });
   }

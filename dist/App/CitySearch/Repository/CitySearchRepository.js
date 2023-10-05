@@ -43,19 +43,55 @@ __export(CitySearchRepository_exports, {
   CitySearchRepository: () => CitySearchRepository
 });
 module.exports = __toCommonJS(CitySearchRepository_exports);
+
+// src/Utils/MakeErrors/MakeErrors.ts
+function MakeErrors(message, status) {
+  return {
+    error: true,
+    message,
+    status
+  };
+}
+
+// src/Utils/StatusCode/StatusCode.ts
+var STATUS_CODE = {
+  OK: 200,
+  BAD_REQUEST: 400,
+  NO_CONTENT: 204,
+  NON_AUTHORIZED: 401,
+  NOT_FOUND: 404,
+  CREATED: 201,
+  INTERNAL_SERVER_ERROR: 500
+};
+
+// src/App/CitySearch/Repository/CitySearchRepository.ts
 var CitySearchRepository = class {
   constructor(model) {
     this.model = model;
   }
   Create(data) {
     return __async(this, null, function* () {
-      return yield this.model.create(data);
+      try {
+        return yield this.model.create(data);
+      } catch (error) {
+        return MakeErrors(error.message, STATUS_CODE.INTERNAL_SERVER_ERROR);
+      }
     });
   }
-  FindByCityAndTechIds(cityId, techId) {
+  FindByCityAndTech(city, technology) {
     return __async(this, null, function* () {
-      const result = yield this.model.findOne({ cityId, technologyId: techId });
+      const result = yield this.model.findOne({ city, technology });
       return result;
+    });
+  }
+  FindByCityByIds(cityId) {
+    return __async(this, null, function* () {
+      try {
+        const result = yield this.model.findOne({ cityId });
+        return result;
+      } catch (error) {
+        return MakeErrors(error.message, STATUS_CODE.INTERNAL_SERVER_ERROR);
+      }
     });
   }
   IncrementCount(id) {
@@ -64,35 +100,25 @@ var CitySearchRepository = class {
         id,
         { $inc: { count: 1 } },
         { new: true }
-      ).select("-__v").populate({
-        path: "cityId",
-        select: "-_id",
-        model: "citys"
-      });
+      );
     });
   }
-  FindFilters(data) {
+  FindTopFivelocal(technology) {
     return __async(this, null, function* () {
-      const { cityId, technologyId } = data;
-      return this.model.find({
-        $and: [
-          { "cityId": cityId },
-          { "technologyId": technologyId }
-        ]
-      });
+      try {
+        return this.model.find({ technology }).select("-createdAt -updatedAt -__v").sort({ count: -1 }).limit(5);
+      } catch (error) {
+        return MakeErrors(error.message, STATUS_CODE.INTERNAL_SERVER_ERROR);
+      }
     });
   }
-  FindTopFivelocal() {
+  FindByName(name) {
     return __async(this, null, function* () {
-      return this.model.find().select("-createdAt -updatedAt -__v -_id").populate({
-        path: "cityId",
-        select: "-_id name",
-        model: "citys"
-      }).populate({
-        path: "technologyId",
-        select: "-_id name",
-        model: "technologys"
-      }).sort({ count: -1 }).limit(5);
+      try {
+        return yield this.model.findOne({ name });
+      } catch (error) {
+        return MakeErrors(error.message, STATUS_CODE.INTERNAL_SERVER_ERROR);
+      }
     });
   }
 };

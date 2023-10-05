@@ -54,7 +54,7 @@ __export(TechnologyController_exports, {
 });
 module.exports = __toCommonJS(TechnologyController_exports);
 
-// src/Utils/Validation/TechnologySchemaValidation.ts
+// src/Utils/Validation/Technology/TechnologySchemaValidation.ts
 var yup = __toESM(require("yup"));
 var TechnologySchemaValidation = class {
   static isValid(data) {
@@ -72,6 +72,17 @@ var TechnologySchemaValidation = class {
   }
 };
 
+// src/Utils/StatusCode/StatusCode.ts
+var STATUS_CODE = {
+  OK: 200,
+  BAD_REQUEST: 400,
+  NO_CONTENT: 204,
+  NON_AUTHORIZED: 401,
+  NOT_FOUND: 404,
+  CREATED: 201,
+  INTERNAL_SERVER_ERROR: 500
+};
+
 // src/App/Technology/Controller/TechnologyController.ts
 var TechnologyController = class {
   constructor(service) {
@@ -86,19 +97,9 @@ var TechnologyController = class {
       }
       try {
         const Technology = yield this.service.CreateFromService(body);
-        return res.status(201).json(Technology);
+        return res.status(STATUS_CODE.CREATED).json(Technology);
       } catch (error) {
-        return res.status(400).json({ error: "Preencha os dados corretamente" });
-      }
-    });
-  }
-  FindAllFromController(req, res) {
-    return __async(this, null, function* () {
-      try {
-        const Result = yield this.service.FindAllFromService();
-        return res.status(200).json(Result);
-      } catch (error) {
-        return res.status(500).json({ error: "Internal Server Error" });
+        return res.status(STATUS_CODE.BAD_REQUEST).json({ error: "Preencha os dados corretamente" });
       }
     });
   }
@@ -106,9 +107,19 @@ var TechnologyController = class {
     return __async(this, null, function* () {
       try {
         const Result = yield this.service.FindTopFiveGlobal();
-        return res.status(200).json(Result);
+        return res.status(STATUS_CODE.OK).json(Result);
       } catch (error) {
-        return res.status(500).json({ error: "Internal Server Error" });
+        return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({ error: "Erro interno no servidor" });
+      }
+    });
+  }
+  FindAllFromController(req, res) {
+    return __async(this, null, function* () {
+      try {
+        const Result = yield this.service.FindAllFromService();
+        return res.status(STATUS_CODE.OK).json(Result);
+      } catch (error) {
+        return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({ error: "Erro interno no servidor" });
       }
     });
   }

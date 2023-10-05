@@ -47,12 +47,13 @@ var __async = (__this, __arguments, generator) => {
   });
 };
 
-// src/App/Technology/MakeTechnology.ts
-var MakeTechnology_exports = {};
-__export(MakeTechnology_exports, {
-  MakeTechnology: () => MakeTechnology
+// src/Routers/Technology/TechnologyRoutes.ts
+var TechnologyRoutes_exports = {};
+__export(TechnologyRoutes_exports, {
+  TechnologyRouter: () => TechnologyRouter
 });
-module.exports = __toCommonJS(MakeTechnology_exports);
+module.exports = __toCommonJS(TechnologyRoutes_exports);
+var import_express = require("express");
 
 // src/Utils/MakeErrors/MakeErrors.ts
 function MakeErrors(message, status) {
@@ -241,11 +242,38 @@ var MakeTechnology = class {
   static getInstance() {
     const Repository = new TechnologyRepository(Technology);
     const Service = new TechnologyService(Repository);
-    const Controller = new TechnologyController(Service);
-    return Controller;
+    const Controller2 = new TechnologyController(Service);
+    return Controller2;
   }
 };
+
+// src/Utils/Middlewares/AuthMiddleware.ts
+var import_jsonwebtoken = __toESM(require("jsonwebtoken"));
+var AuthMiddleware = class {
+  static handler(req, res, next) {
+    return __async(this, null, function* () {
+      const { headers } = req;
+      if (!headers.authorization) {
+        return res.status(STATUS_CODE.NON_AUTHORIZED).json(headers.authorization);
+      }
+      const [, token] = headers.authorization.split(" ");
+      try {
+        import_jsonwebtoken.default.verify(token, process.env.JWT_SECRET_KEY);
+      } catch (err) {
+        return res.status(STATUS_CODE.NON_AUTHORIZED).json(err);
+      }
+      next();
+    });
+  }
+};
+
+// src/Routers/Technology/TechnologyRoutes.ts
+var TechnologyRouter = (0, import_express.Router)();
+var Controller = MakeTechnology.getInstance();
+TechnologyRouter.use(AuthMiddleware.handler);
+TechnologyRouter.post("/register", Controller.CreateFromController.bind(Controller));
+TechnologyRouter.get("/", Controller.FindAllFromController.bind(Controller));
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
-  MakeTechnology
+  TechnologyRouter
 });

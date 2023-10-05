@@ -47,68 +47,29 @@ var __async = (__this, __arguments, generator) => {
   });
 };
 
-// src/App/Auth/Controller/AuthController.ts
-var AuthController_exports = {};
-__export(AuthController_exports, {
-  AuthController: () => AuthController
+// src/Utils/Validation/City/CitySchemaValidation.ts
+var CitySchemaValidation_exports = {};
+__export(CitySchemaValidation_exports, {
+  CitySchemaValidation: () => CitySchemaValidation
 });
-module.exports = __toCommonJS(AuthController_exports);
-
-// src/Utils/StatusCode/StatusCode.ts
-var STATUS_CODE = {
-  OK: 200,
-  BAD_REQUEST: 400,
-  NO_CONTENT: 204,
-  NON_AUTHORIZED: 401,
-  NOT_FOUND: 404,
-  CREATED: 201,
-  INTERNAL_SERVER_ERROR: 500
-};
-
-// src/Utils/Validation/Auth/AuthSchemaValidation.ts
+module.exports = __toCommonJS(CitySchemaValidation_exports);
 var yup = __toESM(require("yup"));
-var AuthSchemaValidation = class {
+var CitySchemaValidation = class {
   static isValid(data) {
     return __async(this, null, function* () {
-      const authSchema = yup.object().shape({
-        email: yup.string().email().required(),
-        password: yup.string().required()
-      });
+      const citySchema = yup.object().shape({
+        name: yup.string().required()
+      }).strict();
       try {
-        yield authSchema.validate(data);
+        yield citySchema.validate(data, { stripUnknown: true });
         return { message: "Success", status: 200 };
       } catch (error) {
-        return { error: "Unauthorized", status: 401 };
-      }
-    });
-  }
-};
-
-// src/App/Auth/Controller/AuthController.ts
-var AuthController = class {
-  constructor(service) {
-    this.service = service;
-  }
-  LoginController(req, res) {
-    return __async(this, null, function* () {
-      try {
-        const { body } = req;
-        const bodyValidation = AuthSchemaValidation.isValid(body);
-        if ("error" in bodyValidation) {
-          return res.status(STATUS_CODE.BAD_REQUEST).json(bodyValidation.error);
-        }
-        const result = yield this.service.Login(body);
-        if ("error" in result) {
-          return res.status(STATUS_CODE.NON_AUTHORIZED).json(result.error);
-        }
-        return res.status(STATUS_CODE.OK).json(result);
-      } catch (error) {
-        return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({ error: "Internal Server Error" });
+        return { error: "You need to fill in all the required fields", status: 400 };
       }
     });
   }
 };
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
-  AuthController
+  CitySchemaValidation
 });

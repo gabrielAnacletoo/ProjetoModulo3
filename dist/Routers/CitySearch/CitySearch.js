@@ -1,7 +1,9 @@
 "use strict";
+var __create = Object.create;
 var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
+var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __export = (target, all) => {
   for (var name in all)
@@ -15,6 +17,14 @@ var __copyProps = (to, from, except, desc) => {
   }
   return to;
 };
+var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
+  // If the importer is in node compatibility mode or this is not an ESM
+  // file that has been converted to a CommonJS file using a Babel-
+  // compatible transform (i.e. "__esModule" has not been set), then set
+  // "default" to the CommonJS "module.exports" for node compatibility.
+  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
+  mod
+));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 var __async = (__this, __arguments, generator) => {
   return new Promise((resolve, reject) => {
@@ -37,12 +47,13 @@ var __async = (__this, __arguments, generator) => {
   });
 };
 
-// src/App/CitySearch/MakeCitySearch.ts
-var MakeCitySearch_exports = {};
-__export(MakeCitySearch_exports, {
-  MakeCitySearch: () => MakeCitySearch
+// src/Routers/CitySearch/CitySearch.ts
+var CitySearch_exports = {};
+__export(CitySearch_exports, {
+  Search: () => Search
 });
-module.exports = __toCommonJS(MakeCitySearch_exports);
+module.exports = __toCommonJS(CitySearch_exports);
+var import_express = require("express");
 
 // src/Utils/StatusCode/StatusCode.ts
 var STATUS_CODE = {
@@ -248,11 +259,37 @@ var MakeCitySearch = class {
     const CitySearchrepository = new CitySearchRepository(CitySearch);
     const TechRepository = new TechnologyRepository(Technology);
     const Service = new CitySearchService(CitySearchrepository, TechRepository);
-    const Controller = new CitySearchController(Service);
-    return Controller;
+    const Controller2 = new CitySearchController(Service);
+    return Controller2;
   }
 };
+
+// src/Utils/Middlewares/AuthMiddleware.ts
+var import_jsonwebtoken = __toESM(require("jsonwebtoken"));
+var AuthMiddleware = class {
+  static handler(req, res, next) {
+    return __async(this, null, function* () {
+      const { headers } = req;
+      if (!headers.authorization) {
+        return res.status(STATUS_CODE.NON_AUTHORIZED).json(headers.authorization);
+      }
+      const [, token] = headers.authorization.split(" ");
+      try {
+        import_jsonwebtoken.default.verify(token, process.env.JWT_SECRET_KEY);
+      } catch (err) {
+        return res.status(STATUS_CODE.NON_AUTHORIZED).json(err);
+      }
+      next();
+    });
+  }
+};
+
+// src/Routers/CitySearch/CitySearch.ts
+var Search = (0, import_express.Router)();
+var Controller = MakeCitySearch.getInstance();
+Search.use(AuthMiddleware.handler);
+Search.get("/", Controller.FindTopFiveLocal.bind(Controller));
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
-  MakeCitySearch
+  Search
 });

@@ -43,32 +43,59 @@ __export(TechnologyRepository_exports, {
   TechnologyRepository: () => TechnologyRepository
 });
 module.exports = __toCommonJS(TechnologyRepository_exports);
+
+// src/Utils/MakeErrors/MakeErrors.ts
+function MakeErrors(message, status) {
+  return {
+    error: true,
+    message,
+    status
+  };
+}
+
+// src/App/Technology/Repository/TechnologyRepository.ts
 var TechnologyRepository = class {
   constructor(model) {
     this.model = model;
   }
   Create(data) {
     return __async(this, null, function* () {
-      return yield this.model.create(data);
+      try {
+        return yield this.model.create(data);
+      } catch (error) {
+        return MakeErrors(error.message, 500);
+      }
     });
   }
   IncrementCount(id) {
     return __async(this, null, function* () {
-      return yield this.model.findByIdAndUpdate(
-        id,
-        { $inc: { count: 1 } },
-        { new: true }
-      );
+      try {
+        return yield this.model.findByIdAndUpdate(
+          id,
+          { $inc: { count: 1 } },
+          { new: true }
+        );
+      } catch (error) {
+        return MakeErrors(error.message, 500);
+      }
     });
   }
   FindById(id) {
     return __async(this, null, function* () {
-      return yield this.model.findById(id);
+      try {
+        return yield this.model.findById(id);
+      } catch (error) {
+        return MakeErrors(error.message, 500);
+      }
     });
   }
   FindAll() {
     return __async(this, null, function* () {
-      return yield this.model.find();
+      try {
+        return yield this.model.find();
+      } catch (error) {
+        return MakeErrors(error.message, 500);
+      }
     });
   }
   FindTopFiveGlobal() {
@@ -76,9 +103,12 @@ var TechnologyRepository = class {
       return this.model.find().select("-createdAt -updatedAt -__v -_id").sort({ count: -1 }).limit(5);
     });
   }
-  FindByName(name) {
+  FindByName(names) {
     return __async(this, null, function* () {
-      return yield this.model.findOne({ name });
+      if (!Array.isArray(names)) {
+        names = [names];
+      }
+      return yield this.model.find({ name: { $in: names.map((name) => new RegExp(`^${name.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&")}$`, "i")) } });
     });
   }
 };

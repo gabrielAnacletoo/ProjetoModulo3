@@ -47,12 +47,13 @@ var __async = (__this, __arguments, generator) => {
   });
 };
 
-// src/App/Jobs/MakeJobs.ts
-var MakeJobs_exports = {};
-__export(MakeJobs_exports, {
-  MakeJobs: () => MakeJobs
+// src/Routers/Jobs/JobsRouters.ts
+var JobsRouters_exports = {};
+__export(JobsRouters_exports, {
+  JobRouter: () => JobRouter
 });
-module.exports = __toCommonJS(MakeJobs_exports);
+module.exports = __toCommonJS(JobsRouters_exports);
+var import_express = require("express");
 
 // src/Utils/MakeErrors/MakeErrors.ts
 function MakeErrors(message, status) {
@@ -624,11 +625,40 @@ var MakeJobs = class {
     const cityseachRepository = new CitySearchRepository(CitySearch);
     const userRepository = new UserRepository(User);
     const Service = new JobService(Repository, techRepository, cityseachRepository, userRepository);
-    const Controller = new JobsController(Service);
-    return Controller;
+    const Controller2 = new JobsController(Service);
+    return Controller2;
   }
 };
+
+// src/Utils/Middlewares/AuthMiddleware.ts
+var import_jsonwebtoken2 = __toESM(require("jsonwebtoken"));
+var AuthMiddleware = class {
+  static handler(req, res, next) {
+    return __async(this, null, function* () {
+      const { headers } = req;
+      if (!headers.authorization) {
+        return res.status(STATUS_CODE.NON_AUTHORIZED).json(headers.authorization);
+      }
+      const [, token] = headers.authorization.split(" ");
+      try {
+        import_jsonwebtoken2.default.verify(token, process.env.JWT_SECRET_KEY);
+      } catch (err) {
+        return res.status(STATUS_CODE.NON_AUTHORIZED).json(err);
+      }
+      next();
+    });
+  }
+};
+
+// src/Routers/Jobs/JobsRouters.ts
+var JobRouter = (0, import_express.Router)();
+var Controller = MakeJobs.getInstance();
+JobRouter.use(AuthMiddleware.handler);
+JobRouter.get("/search", Controller.FilterFromController.bind(Controller));
+JobRouter.post("/register", Controller.CreateFromController.bind(Controller));
+JobRouter.get("/all", Controller.FindAll.bind(Controller));
+JobRouter.get("/", Controller.Pagination.bind(Controller));
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
-  MakeJobs
+  JobRouter
 });

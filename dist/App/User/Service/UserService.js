@@ -65,20 +65,100 @@ var Bcrypt = class {
   }
 };
 
+// src/Utils/MakeErrors/MakeErrors.ts
+function MakeErrors(message, status) {
+  return {
+    error: true,
+    message,
+    status
+  };
+}
+
+// src/Utils/StatusCode/StatusCode.ts
+var STATUS_CODE = {
+  OK: 200,
+  BAD_REQUEST: 400,
+  NO_CONTENT: 204,
+  NON_AUTHORIZED: 401,
+  NOT_FOUND: 404,
+  CREATED: 201,
+  INTERNAL_SERVER_ERROR: 500
+};
+
 // src/App/User/Service/UserService.ts
+var import_jsonwebtoken = __toESM(require("jsonwebtoken"));
 var UserService = class {
   constructor(repository) {
     this.repository = repository;
   }
   CreateFromService(data) {
     return __async(this, null, function* () {
-      const userAlreadyExists = yield this.repository.FindByEmail(data.email);
-      if (userAlreadyExists) {
-        return { error: "User Already Exists", status: 400 };
+      try {
+        const userAlreadyExists = yield this.repository.FindByEmail(data.email);
+        if (userAlreadyExists) {
+          return MakeErrors("Usu\xE1rio ja existe", STATUS_CODE.BAD_REQUEST);
+        }
+        const hashedPassword = Bcrypt.encrypt(data.password);
+        data.password = hashedPassword;
+        return yield this.repository.Create(data);
+      } catch (error) {
+        return MakeErrors(error.message, STATUS_CODE.INTERNAL_SERVER_ERROR);
       }
-      const hashedPassword = Bcrypt.encrypt(data.password);
-      data.password = hashedPassword;
-      return yield this.repository.Create(data);
+    });
+  }
+  EditProfile(body, token) {
+    return __async(this, null, function* () {
+      const [, tokenNovo] = token.split(" ");
+      const decoded = import_jsonwebtoken.default.decode(tokenNovo);
+      const { _id } = decoded._doc;
+      try {
+        const hashedPassword = Bcrypt.encrypt(body.password);
+        body.password = hashedPassword;
+        const EditUser = yield this.repository.EditProfile(body, _id);
+        return EditUser;
+      } catch (error) {
+        return MakeErrors(error.message, STATUS_CODE.INTERNAL_SERVER_ERROR);
+      }
+    });
+  }
+  AddFavorites(favorite, token) {
+    return __async(this, null, function* () {
+      const [, tokenNovo] = token.split(" ");
+      const decoded = import_jsonwebtoken.default.decode(tokenNovo);
+      const { _id } = decoded._doc;
+      try {
+        const AddFavorite = yield this.repository.AddFavorites(favorite, _id);
+        return AddFavorite;
+      } catch (error) {
+        return MakeErrors(error.message, STATUS_CODE.INTERNAL_SERVER_ERROR);
+      }
+    });
+  }
+  RemoveFavorite(favorite, token) {
+    return __async(this, null, function* () {
+      const [, tokenNovo] = token.split(" ");
+      const decoded = import_jsonwebtoken.default.decode(tokenNovo);
+      const { _id } = decoded._doc;
+      try {
+        const result = yield this.repository.RemoveFavorite(favorite, _id);
+        console.log("result  deleteado ==> ", result);
+        return result;
+      } catch (error) {
+        return MakeErrors(error.message, STATUS_CODE.INTERNAL_SERVER_ERROR);
+      }
+    });
+  }
+  InfoUser(token) {
+    return __async(this, null, function* () {
+      const [, tokenNovo] = token.split(" ");
+      const decoded = import_jsonwebtoken.default.decode(tokenNovo);
+      const { _id } = decoded._doc;
+      try {
+        const userinfo = yield this.repository.UserInfo(_id);
+        return userinfo;
+      } catch (error) {
+        return MakeErrors(error.message, STATUS_CODE.INTERNAL_SERVER_ERROR);
+      }
     });
   }
 };

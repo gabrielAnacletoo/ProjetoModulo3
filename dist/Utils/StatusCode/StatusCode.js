@@ -17,20 +17,22 @@ var __copyProps = (to, from, except, desc) => {
 };
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-// src/App/CitySearch/Entitie/CitySearch.ts
-var CitySearch_exports = {};
-__export(CitySearch_exports, {
-  CitySearch: () => CitySearch
+// src/Utils/StatusCode/StatusCode.ts
+var StatusCode_exports = {};
+__export(StatusCode_exports, {
+  STATUS_CODE: () => STATUS_CODE
 });
-module.exports = __toCommonJS(CitySearch_exports);
-var import_mongoose = require("mongoose");
-var CitySearchSchema = new import_mongoose.Schema({
-  city: { type: String, required: true },
-  technology: { type: String, required: true },
-  count: { type: Number, default: 0 }
-}, { timestamps: true });
-var CitySearch = (0, import_mongoose.model)("citysearch", CitySearchSchema);
+module.exports = __toCommonJS(StatusCode_exports);
+var STATUS_CODE = {
+  OK: 200,
+  BAD_REQUEST: 400,
+  NO_CONTENT: 204,
+  NON_AUTHORIZED: 401,
+  NOT_FOUND: 404,
+  CREATED: 201,
+  INTERNAL_SERVER_ERROR: 500
+};
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
-  CitySearch
+  STATUS_CODE
 });

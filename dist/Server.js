@@ -19,10 +19,6 @@ var __spreadValues = (a, b) => {
     }
   return a;
 };
-var __export = (target, all) => {
-  for (var name in all)
-    __defProp(target, name, { get: all[name], enumerable: true });
-};
 var __copyProps = (to, from, except, desc) => {
   if (from && typeof from === "object" || typeof from === "function") {
     for (let key of __getOwnPropNames(from))
@@ -39,7 +35,6 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
   mod
 ));
-var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 var __async = (__this, __arguments, generator) => {
   return new Promise((resolve, reject) => {
     var fulfilled = (value) => {
@@ -61,12 +56,51 @@ var __async = (__this, __arguments, generator) => {
   });
 };
 
+// src/Index.ts
+var import_express7 = __toESM(require("express"));
+var import_dotenv = __toESM(require("dotenv"));
+
+// src/Database/Database.ts
+var import_mongoose = __toESM(require("mongoose"));
+var DatabaseConfig = class {
+  static initialize() {
+    import_mongoose.default.connection.on("open", () => {
+      console.log("                        .,,uod8B8bou,,.");
+      console.log("              ..,uod8BBBBBBBBBBBBBBBBRPFT?l!i:.");
+      console.log("         ,=m8BBBBBBBBBBBBBBBRPFT?!||||||||||||||");
+      console.log(`         !...:!TVBBBRPFT||||||||||!!^^"'    ||||`);
+      console.log(`         !.......:!?|||||!!^^"'             ||||`);
+      console.log("         !.........||||                     ||||");
+      console.log("         !.........||||  #connected         ||||");
+      console.log("         !.........||||                     ||||");
+      console.log("         !.........||||                     ||||");
+      console.log("         !.........||||                     ||||");
+      console.log("         !.........||||                     ||||");
+      console.log("         `.........||||                    ,||||");
+      console.log("          .;.......||||               _.-!!|||||");
+      console.log("   .,uodWBBBBb.....||||       _.-!!|||||||||!':");
+      console.log("!YBBBBBBBBBBBBBBb..!|||:..-!!|||||||!iof68BBBBBb....");
+      console.log("!..YBBBBBBBBBBBBBBb!!||||||||!iof68BBBBBBRPFT?!::   `.");
+      console.log("!....YBBBBBBBBBBBBBBbaaitf68BBBBBBRPFT?!:::::::::     `.");
+      console.log('!......YBBBBBBBBBBBBBBBBBBBRPFT?!::::::;:!^"`;:::       `.');
+      console.log("!........YBBBBBBBBBBRPFT?!::::::::::^''...::::::;         iBBbo.");
+      console.log("`..........YBRPFT?!::::::::::::::::::::::::;iof68bo.      WBBBBbo.");
+      console.log("  `..........:::::::::::::::::::::::;iof688888888888b.     `YBBBP^'");
+      console.log("    `........::::::::::::::::;iof688888888888888888888b.     `");
+      console.log("      `......:::::::::;iof688888888888888888888888888888b.");
+      console.log("        `....:::;iof688888888888888888888888888888888899fT!");
+      console.log("          `..::!8888888888888888888888888888888899fT|!^\"'");
+      console.log("            `' !!988888888888888888888888899fT|!^\"");
+      console.log('                `!!8888888888888888899fT|!^"');
+      console.log('                  `!988888888899fT|!^"');
+      console.log('                    `!9899fT|!^"');
+      console.log('                      `!^"');
+    });
+    import_mongoose.default.connect(process.env.DATABASE_URL);
+  }
+};
+
 // src/Routers/index.ts
-var Routers_exports = {};
-__export(Routers_exports, {
-  routes: () => routes
-});
-module.exports = __toCommonJS(Routers_exports);
 var import_express6 = require("express");
 
 // src/Routers/User/UserRouters.ts
@@ -380,15 +414,15 @@ var UserController = class {
 };
 
 // src/App/User/Entities/User.ts
-var import_mongoose = require("mongoose");
-var userSchema = new import_mongoose.Schema({
+var import_mongoose2 = require("mongoose");
+var userSchema = new import_mongoose2.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  favorites: [{ type: import_mongoose.Schema.Types.ObjectId, ref: "jobs", default: null }],
+  favorites: [{ type: import_mongoose2.Schema.Types.ObjectId, ref: "jobs", default: null }],
   history: [{ type: String, default: null }]
 }, { timestamps: true });
-var User = (0, import_mongoose.model)("user", userSchema);
+var User = (0, import_mongoose2.model)("user", userSchema);
 
 // src/App/User/MakeUser.ts
 var MakeUser = class {
@@ -712,9 +746,9 @@ var JobService = class {
 };
 
 // src/App/Jobs/Entitie/Jobs.ts
-var import_mongoose2 = require("mongoose");
+var import_mongoose3 = require("mongoose");
 var import_mongoose_paginate_v2 = __toESM(require("mongoose-paginate-v2"));
-var JobsSchema = new import_mongoose2.Schema({
+var JobsSchema = new import_mongoose3.Schema({
   position: { type: String, required: true, enum: ["junior", "pleno", "senior"], default: null },
   //junior, pleno , senior
   salary: { type: String, required: true },
@@ -740,7 +774,7 @@ var JobsSchema = new import_mongoose2.Schema({
   //nao entendi
 }, { timestamps: true });
 JobsSchema.plugin(import_mongoose_paginate_v2.default);
-var Jobs = (0, import_mongoose2.model)("jobs", JobsSchema);
+var Jobs = (0, import_mongoose3.model)("jobs", JobsSchema);
 
 // src/App/Technology/Repository/TechnologyRepository.ts
 var TechnologyRepository = class {
@@ -803,12 +837,12 @@ var TechnologyRepository = class {
 };
 
 // src/App/Technology/Entities/Technology.ts
-var import_mongoose3 = require("mongoose");
-var TechnologySChema = new import_mongoose3.Schema({
+var import_mongoose4 = require("mongoose");
+var TechnologySChema = new import_mongoose4.Schema({
   name: { type: String, require: true },
   count: { type: Number, default: 0 }
 }, { timestamps: true });
-var Technology = (0, import_mongoose3.model)("technologys", TechnologySChema);
+var Technology = (0, import_mongoose4.model)("technologys", TechnologySChema);
 
 // src/App/CitySearch/Repository/CitySearchRepository.ts
 var CitySearchRepository = class {
@@ -870,13 +904,13 @@ var CitySearchRepository = class {
 };
 
 // src/App/CitySearch/Entitie/CitySearch.ts
-var import_mongoose4 = require("mongoose");
-var CitySearchSchema = new import_mongoose4.Schema({
+var import_mongoose5 = require("mongoose");
+var CitySearchSchema = new import_mongoose5.Schema({
   city: { type: String, required: true },
   technology: { type: String, required: true },
   count: { type: Number, default: 0 }
 }, { timestamps: true });
-var CitySearch = (0, import_mongoose4.model)("citysearch", CitySearchSchema);
+var CitySearch = (0, import_mongoose5.model)("citysearch", CitySearchSchema);
 
 // src/App/Jobs/MakeJobs.ts
 var MakeJobs = class {
@@ -1175,7 +1209,14 @@ routes.use("/technology", TechnologyRouter);
 routes.use("/search", Search);
 routes.use("/auth", userAuth);
 routes.use("/user", userRoutes);
-// Annotate the CommonJS export names for ESM import in node:
-0 && (module.exports = {
-  routes
-});
+
+// src/Index.ts
+import_dotenv.default.config();
+DatabaseConfig.initialize();
+var app = (0, import_express7.default)();
+app.use(import_express7.default.json());
+app.use(routes);
+
+// src/Server.ts
+var port = process.env.PORT;
+app.listen(port, () => console.log(`Server Running at port ${port}`));

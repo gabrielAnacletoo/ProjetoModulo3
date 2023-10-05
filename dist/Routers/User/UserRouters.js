@@ -47,12 +47,13 @@ var __async = (__this, __arguments, generator) => {
   });
 };
 
-// src/App/User/MakeUser.ts
-var MakeUser_exports = {};
-__export(MakeUser_exports, {
-  MakeUser: () => MakeUser
+// src/Routers/User/UserRouters.ts
+var UserRouters_exports = {};
+__export(UserRouters_exports, {
+  userRoutes: () => userRoutes
 });
-module.exports = __toCommonJS(MakeUser_exports);
+module.exports = __toCommonJS(UserRouters_exports);
+var import_express = require("express");
 
 // src/Utils/MakeErrors/MakeErrors.ts
 function MakeErrors(message, status) {
@@ -377,11 +378,41 @@ var MakeUser = class {
   static getInstance() {
     const Repository = new UserRepository(User);
     const Service = new UserService(Repository);
-    const Controller = new UserController(Service);
-    return Controller;
+    const Controller2 = new UserController(Service);
+    return Controller2;
   }
 };
+
+// src/Utils/Middlewares/AuthMiddleware.ts
+var import_jsonwebtoken2 = __toESM(require("jsonwebtoken"));
+var AuthMiddleware = class {
+  static handler(req, res, next) {
+    return __async(this, null, function* () {
+      const { headers } = req;
+      if (!headers.authorization) {
+        return res.status(STATUS_CODE.NON_AUTHORIZED).json(headers.authorization);
+      }
+      const [, token] = headers.authorization.split(" ");
+      try {
+        import_jsonwebtoken2.default.verify(token, process.env.JWT_SECRET_KEY);
+      } catch (err) {
+        return res.status(STATUS_CODE.NON_AUTHORIZED).json(err);
+      }
+      next();
+    });
+  }
+};
+
+// src/Routers/User/UserRouters.ts
+var userRoutes = (0, import_express.Router)();
+var Controller = MakeUser.getInstance();
+userRoutes.post("/register", Controller.CreateFromController.bind(Controller));
+userRoutes.use(AuthMiddleware.handler);
+userRoutes.get("/me", Controller.InfoUser.bind(Controller));
+userRoutes.patch("/edit", Controller.EditProfile.bind(Controller));
+userRoutes.post("/favorites", Controller.AddFavorites.bind(Controller));
+userRoutes.delete("/favorites/remove/:id", Controller.RemoveFavorite.bind(Controller));
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
-  MakeUser
+  userRoutes
 });

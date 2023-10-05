@@ -61,12 +61,13 @@ var __async = (__this, __arguments, generator) => {
   });
 };
 
-// src/App/Auth/MakeAuth.ts
-var MakeAuth_exports = {};
-__export(MakeAuth_exports, {
-  MakeAuth: () => MakeAuth
+// src/Routers/Auth/Auth.ts
+var Auth_exports = {};
+__export(Auth_exports, {
+  userAuth: () => userAuth
 });
-module.exports = __toCommonJS(MakeAuth_exports);
+module.exports = __toCommonJS(Auth_exports);
+var import_express = require("express");
 
 // src/App/User/Entities/User.ts
 var import_mongoose = require("mongoose");
@@ -281,7 +282,12 @@ var MakeAuth = class {
     return controller;
   }
 };
+
+// src/Routers/Auth/Auth.ts
+var userAuth = (0, import_express.Router)();
+var Controller = MakeAuth.getInstance();
+userAuth.post("/", Controller.LoginController.bind(Controller));
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
-  MakeAuth
+  userAuth
 });

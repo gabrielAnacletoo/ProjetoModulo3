@@ -27,7 +27,9 @@ var import_mongoose = require("mongoose");
 var userSchema = new import_mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
-  password: { type: String, required: true }
+  password: { type: String, required: true },
+  favorites: [{ type: import_mongoose.Schema.Types.ObjectId, ref: "jobs", default: null }],
+  history: [{ type: String, default: null }]
 }, { timestamps: true });
 var User = (0, import_mongoose.model)("user", userSchema);
 // Annotate the CommonJS export names for ESM import in node:

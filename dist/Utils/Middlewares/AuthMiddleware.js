@@ -54,18 +54,31 @@ __export(AuthMiddleware_exports, {
 });
 module.exports = __toCommonJS(AuthMiddleware_exports);
 var import_jsonwebtoken = __toESM(require("jsonwebtoken"));
+
+// src/Utils/StatusCode/StatusCode.ts
+var STATUS_CODE = {
+  OK: 200,
+  BAD_REQUEST: 400,
+  NO_CONTENT: 204,
+  NON_AUTHORIZED: 401,
+  NOT_FOUND: 404,
+  CREATED: 201,
+  INTERNAL_SERVER_ERROR: 500
+};
+
+// src/Utils/Middlewares/AuthMiddleware.ts
 var AuthMiddleware = class {
   static handler(req, res, next) {
     return __async(this, null, function* () {
       const { headers } = req;
       if (!headers.authorization) {
-        return res.status(401).json(headers.authorization);
+        return res.status(STATUS_CODE.NON_AUTHORIZED).json(headers.authorization);
       }
       const [, token] = headers.authorization.split(" ");
       try {
         import_jsonwebtoken.default.verify(token, process.env.JWT_SECRET_KEY);
       } catch (err) {
-        return res.status(401).json(err);
+        return res.status(STATUS_CODE.NON_AUTHORIZED).json(err);
       }
       next();
     });

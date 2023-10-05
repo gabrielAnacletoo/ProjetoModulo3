@@ -54,7 +54,7 @@ __export(JobsController_exports, {
 });
 module.exports = __toCommonJS(JobsController_exports);
 
-// src/Utils/Validation/JobSchemaValidation.ts
+// src/Utils/Validation/Jobs/JobSchemaValidation.ts
 var yup = __toESM(require("yup"));
 var JobsSchemaValidation = class {
   static isValid(data) {
@@ -77,6 +77,17 @@ var JobsSchemaValidation = class {
   }
 };
 
+// src/Utils/StatusCode/StatusCode.ts
+var STATUS_CODE = {
+  OK: 200,
+  BAD_REQUEST: 400,
+  NO_CONTENT: 204,
+  NON_AUTHORIZED: 401,
+  NOT_FOUND: 404,
+  CREATED: 201,
+  INTERNAL_SERVER_ERROR: 500
+};
+
 // src/App/Jobs/Controller/JobsController.ts
 var JobsController = class {
   constructor(service) {
@@ -91,21 +102,48 @@ var JobsController = class {
       }
       try {
         const job = yield this.service.CreateFromService(body);
-        return res.status(201).json(job);
+        return res.status(STATUS_CODE.CREATED).json(job);
       } catch (error) {
-        return res.status(400).json({ error: "Preencha os dados corretamente" });
+        return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({ error: "Erro interno no servidor" });
       }
     });
   }
   FilterFromController(req, res) {
     return __async(this, null, function* () {
-      const params = req.query;
-      const filter = {};
-      for (const key in params) {
-        filter[key] = params[key];
+      const token = req.headers.authorization;
+      try {
+        const params = req.query;
+        const filter = {};
+        for (const key in params) {
+          filter[key] = params[key];
+        }
+        const results = yield this.service.FilterFromService(filter, token);
+        res.status(STATUS_CODE.OK).json(results);
+      } catch (error) {
+        return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({ error: "Erro interno no servidor" });
       }
-      const results = yield this.service.FilterFromService(filter);
-      res.status(200).json(results);
+    });
+  }
+  Pagination(req, res) {
+    return __async(this, null, function* () {
+      try {
+        const page = parseInt(req.query.page);
+        const limite = parseInt(req.query.limit);
+        const result = yield this.service.Pagination(page, limite);
+        return res.status(STATUS_CODE.OK).json(result);
+      } catch (error) {
+        return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({ error: "Erro interno no servidor" });
+      }
+    });
+  }
+  FindAll(req, res) {
+    return __async(this, null, function* () {
+      try {
+        const result = yield this.service.FindAll();
+        return res.status(STATUS_CODE.OK).json(result);
+      } catch (error) {
+        return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({ error: "Erro interno no servidor" });
+      }
     });
   }
 };

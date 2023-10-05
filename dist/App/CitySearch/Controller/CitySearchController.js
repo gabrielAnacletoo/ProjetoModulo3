@@ -43,29 +43,31 @@ __export(CitySearchController_exports, {
   CitySearchController: () => CitySearchController
 });
 module.exports = __toCommonJS(CitySearchController_exports);
+
+// src/Utils/StatusCode/StatusCode.ts
+var STATUS_CODE = {
+  OK: 200,
+  BAD_REQUEST: 400,
+  NO_CONTENT: 204,
+  NON_AUTHORIZED: 401,
+  NOT_FOUND: 404,
+  CREATED: 201,
+  INTERNAL_SERVER_ERROR: 500
+};
+
+// src/App/CitySearch/Controller/CitySearchController.ts
 var CitySearchController = class {
   constructor(service) {
     this.service = service;
-  }
-  FilterFromController(req, res) {
-    return __async(this, null, function* () {
-      const technologyId = req.query.technology;
-      const cityId = req.query.city;
-      try {
-        const results = yield this.service.FilterFromService(cityId, technologyId);
-        res.status(200).json(results);
-      } catch (error) {
-        res.status(500).json({ error: "Internal Server Error", status: 500 });
-      }
-    });
   }
   FindTopFiveLocal(req, res) {
     return __async(this, null, function* () {
       try {
         const Result = yield this.service.FindTopFiveLocal();
-        return res.status(200).json(Result);
+        console.log("Result controler ==> ", Result);
+        return res.status(STATUS_CODE.OK).json(Result);
       } catch (error) {
-        return res.status(500).json({ error: "Internal Server Error" });
+        return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({ error: "Erro interno no servidor" });
       }
     });
   }
