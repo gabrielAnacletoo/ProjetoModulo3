@@ -2,7 +2,7 @@
   "name": "projeto-modulo-3",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "Server.js",
   "scripts": {
     "start:dev": "tsx watch src/Server.ts",
     "start": "node dist/Server.js",
