@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start:dev": "tsx watch src/server.ts",
-    "start": "nodemon --exec ts-node src/server.js",
+    "start": "node --exec ts-node src/server.js",
     "build": "tsup src",
     "test": "vitest"
   },
