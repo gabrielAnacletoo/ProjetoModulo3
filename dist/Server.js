@@ -1221,4 +1221,4 @@ app.use(routes);
 
 // src/Server.ts
 var port = process.env.PORT || 3e3;
-app.listen(3e3, () => console.log(`Server Running at port ${port}`));
+app.listen(port, () => console.log(`Server Running at port ${port}`));
