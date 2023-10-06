@@ -96,6 +96,19 @@ name: "React Native"
 favorites: "6516d478d6c472b0832a28a9"
 }
 ```
+
+### 🟢 POST /user/register
+- **Descrição**: Cadastra um usuário no sistema.
+- **Corpo da Requisição**:
+```javascript
+{
+	"name": "Gabriel",
+	"email": "gah@anacleto.com.br",
+	"password": "senha1234"
+}
+```
+
+
 ### 🟢 POST /jobs/register
 - **Descrição**: Cria uma vaga no bando de dados.
 - **Corpo da Requisição**:
@@ -130,5 +143,5 @@ password: "senhanova123"
 - `id`: Identificador único da vaga.
 
 ### Detalhes Adicionais
-- **Autor da Vaga:** [Gabriel Anacleto](https://www.linkedin.com/in/gabriel-anacletoo/)
+- **Autor da API:** [Gabriel Anacleto](https://www.linkedin.com/in/gabriel-anacletoo/)
 - **Contato:** gabrielanacleto159@live.com
