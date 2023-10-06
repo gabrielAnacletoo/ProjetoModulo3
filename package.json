@@ -4,11 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start:dev": "tsx watch src/server.ts",
-    "start": "node --exec ts-node src/server.js",
+    "start:dev": "tsc --watch src/server.ts",
+    "start": "ts-node src/server.ts",
     "build": "tsup src",
     "test": "vitest"
   },
+  
   "keywords": [],
   "author": "",
   "license": "ISC",
