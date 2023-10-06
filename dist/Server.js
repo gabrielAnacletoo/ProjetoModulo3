@@ -1220,5 +1220,5 @@ app.use(import_express7.default.json());
 app.use(routes);
 
 // src/Server.ts
-var port = process.env.PORT || 3e3;
+var port = process.env.PORT || 3333;
 app.listen(port, () => console.log(`Server Running at port ${port}`));
