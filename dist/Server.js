@@ -1221,4 +1221,5 @@ app.use(routes);
 
 // src/Server.ts
 var port = process.env.PORT || 3333;
+DatabaseConfig.initialize();
 app.listen(port, () => console.log(`Server Running at port ${port}`));
