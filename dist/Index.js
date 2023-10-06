@@ -69,6 +69,7 @@ __export(Index_exports, {
 module.exports = __toCommonJS(Index_exports);
 var import_express7 = __toESM(require("express"));
 var import_dotenv = __toESM(require("dotenv"));
+var import_cors = __toESM(require("cors"));
 
 // src/Database/Database.ts
 var import_mongoose = __toESM(require("mongoose"));
@@ -1224,6 +1225,7 @@ routes.use("/user", userRoutes);
 import_dotenv.default.config();
 DatabaseConfig.initialize();
 var app = (0, import_express7.default)();
+app.use((0, import_cors.default)({ origin: "*" }));
 app.use(import_express7.default.json());
 app.use(routes);
 // Annotate the CommonJS export names for ESM import in node:
