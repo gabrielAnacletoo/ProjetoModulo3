@@ -23,6 +23,8 @@ it("must be able to create a new technology", async () =>{
     const parasMock = {
         name: "PHP",
         count: 0,
+        createdAt: new Date(),
+        updatedAt: new Date()
     }
 
     const expected = {
@@ -39,7 +41,7 @@ it("must be able to create a new technology", async () =>{
       })
 
 
-vi.spyOn(RepositoryFake, "FindByName").mockResolvedValue(null) 
+vi.spyOn(RepositoryFake, "FindByName").mockResolvedValue([]) 
 vi.spyOn(RepositoryFake, "Create").mockResolvedValue(expected) 
 
 const result = await sut.CreateFromService(parasMock)
@@ -55,6 +57,8 @@ it("should return an error if the tecnology already exists", async () => {
     const parasMock = {
         name: "PHP",
         count: 0,
+        createdAt: new Date(),
+        updatedAt: new Date()
     }
 
     const MockReturn = {
@@ -63,7 +67,7 @@ it("should return an error if the tecnology already exists", async () => {
         count: 0,
     } as any
 
-const expected = MakeErrors(`Tecnologia ${parasMock.name} já existe.`, STATUS_CODE.BAD_REQUEST)
+const expected = MakeErrors(`Tecnologia não foi criada, preencha corretamente`, STATUS_CODE.BAD_REQUEST)
 
 vi.spyOn(RepositoryFake, "FindByName").mockResolvedValue(MockReturn) 
 
@@ -74,12 +78,16 @@ expect(result).toStrictEqual(expected)
 
 // Error if technology is not created
 it("should return an error if the technology is not created", async () => {
-const MockValue = {
-    name: "Phyton",
-    test: "test"
-}
+    const MockValue = {
+        name: "Phyton",
+        test: "test",
+        count: 0,
+        createdAt: new Date(),
+        updatedAt: new Date()
+    }
+
 const expected = MakeErrors("Tecnologia não foi criada, preencha corretamente", STATUS_CODE.BAD_REQUEST)
-vi.spyOn(RepositoryFake, "FindByName").mockResolvedValue(null) 
+vi.spyOn(RepositoryFake, "FindByName").mockResolvedValue([]) 
 vi.spyOn(RepositoryFake, "Create").mockResolvedValue(expected) 
 
 const result = await sut.CreateFromService(MockValue)
@@ -89,7 +97,12 @@ expect(result).toStrictEqual(expected)
 
 // Error internal server error
 it("should return an error on the server if it doesn't pass within the try", async () => {
-    const MockData = { name: "Java"}
+    const MockData = {
+        name: "Java",
+        count: 0,
+        createdAt: new Date(),
+        updatedAt: new Date()
+    }
     const MockError = new Error("Something went wrong")
     vi.spyOn(RepositoryFake, "FindByName").mockRejectedValue(MockError)
     vi.spyOn(RepositoryFake, "Create").mockRejectedValue(MockError)
