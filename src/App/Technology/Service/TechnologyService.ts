@@ -16,6 +16,7 @@ class TechnologyService {
                 return MakeErrors("Nome da tecnologia não fornecido", STATUS_CODE.BAD_REQUEST)
             }
             const FoundTech = await this.repository.FindByName(data.name) 
+            console.log('FoundTech ==> ', FoundTech)
             if(FoundTech){
                 return MakeErrors(`Tecnologia ${data.name} já existe.`, STATUS_CODE.BAD_REQUEST)
             }
