@@ -17,7 +17,7 @@ class TechnologyService {
             }
             const FoundTech = await this.repository.FindByName(data.name) 
             console.log('FoundTech ==> ', FoundTech)
-            if(FoundTech){
+            if (FoundTech && FoundTech.length > 0) {
                 return MakeErrors(`Tecnologia ${data.name} já existe.`, STATUS_CODE.BAD_REQUEST)
             }
             const TechnologyCreated = await this.repository.Create(data)
