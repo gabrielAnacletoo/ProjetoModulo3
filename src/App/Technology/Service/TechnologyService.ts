@@ -9,9 +9,9 @@ import { STATUS_CODE } from "../../../Utils/StatusCode/StatusCode";
 class TechnologyService {
     constructor(private repository: TechnologyRepository) { }
 
-    async CreateFromService(data: any) { //TechnologyDocument
+    async CreateFromService(data: TechnologyDocument) { 
         try {
-            const FoundTech = await this.repository.FindByName(data.name)
+            const FoundTech = await this.repository.FindByName(data.name as string) 
             if(FoundTech){
                 return MakeErrors(`Tecnologia ${data.name} já existe.`, STATUS_CODE.BAD_REQUEST)
             }

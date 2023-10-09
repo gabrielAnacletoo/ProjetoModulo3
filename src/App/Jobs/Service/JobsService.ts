@@ -44,7 +44,7 @@ class JobService {
         }
     }
 
-    async FilterFromService(filter: any, token: string) {//Filter
+    async FilterFromService(filter: Filter, token: string) {
         const [, tokenNovo] = token.split(" ");
         const decoded: any = JWT.decode(tokenNovo);
         const { _id } = decoded._doc;

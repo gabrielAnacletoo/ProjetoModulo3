@@ -13,7 +13,7 @@ interface AuthData {
 class AuthService {
     constructor(private repository: UserRepository) { }
 
-    async Login(data: any) { //AuthData
+    async Login(data: AuthData) {
         try {
             const userAlreadyExists = await this.repository.FindByEmail(data.email)
             if (!userAlreadyExists) {
