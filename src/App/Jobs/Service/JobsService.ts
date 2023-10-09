@@ -32,7 +32,7 @@ class JobService {
         private userRepository: UserRepository,
     ) { }
 
-    async CreateFromService(data: any) {//JobsDocument
+    async CreateFromService(data: JobsDocument) {
         try {
             const CretedJob = await this.Repository.Create(data);
             if (!CretedJob) {
