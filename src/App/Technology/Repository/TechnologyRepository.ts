@@ -51,7 +51,7 @@ class TechnologyRepository {
 
 async FindByName(names: string | string[]) {
   if (!Array.isArray(names)) {
-    names = [names]; // Se não for array, transforma em um array com um único elemento
+    names = [names]; 
   }
   return await this.model.find({ name: { $in: names.map(name => new RegExp(`^${name.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')}$`, 'i')) } });
 }

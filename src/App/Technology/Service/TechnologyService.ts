@@ -9,11 +9,13 @@ import { STATUS_CODE } from "../../../Utils/StatusCode/StatusCode";
 class TechnologyService {
     constructor(private repository: TechnologyRepository) { }
 
-    async CreateFromService(data: any ) { //TechnologyDocument
-        console.log('data -> teste -> ',data)
-        console.log('data.name -> teste -> ',data.name)
+    async CreateFromService(data: TechnologyDocument ) { //TechnologyDocument
+
         try {
-            const FoundTech = await this.repository.FindByName(data.name as string) 
+            if (!data.name) {
+                return MakeErrors("Nome da tecnologia não fornecido", STATUS_CODE.BAD_REQUEST)
+            }
+            const FoundTech = await this.repository.FindByName(data.name) 
             if(FoundTech){
                 return MakeErrors(`Tecnologia ${data.name} já existe.`, STATUS_CODE.BAD_REQUEST)
             }
