@@ -9,7 +9,9 @@ import { STATUS_CODE } from "../../../Utils/StatusCode/StatusCode";
 class TechnologyService {
     constructor(private repository: TechnologyRepository) { }
 
-    async CreateFromService(data: TechnologyDocument) { 
+    async CreateFromService(data: any ) { //TechnologyDocument
+        console.log('data -> teste -> ',data)
+        console.log('data.name -> teste -> ',data.name)
         try {
             const FoundTech = await this.repository.FindByName(data.name as string) 
             if(FoundTech){

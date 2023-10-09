@@ -54,21 +54,21 @@ Antes de começar, certifique-se de ter o [Node.js](https://nodejs.org/) instala
 ## 🛣️ Rotas da API
 
 ### 🔵 GET /user/me
-- **Descrição**: Retorna todas as informações do usuário.
+- **Descrição**: Retorna todas as informações do usuário(Precisa de autenticação).
 ### 🔵 GET /technology
-- **Descrição**: Retorna todas as tecnologias cadastradas no MongoDB.
+- **Descrição**: Retorna todas as tecnologias cadastradas no MongoDB(Precisa de autenticação).
 ### 🔵 GET /jobs/
-- **Descrição**: Retorna todas as vagas cadastradas no MongoDB com paginação.
+- **Descrição**: Retorna todas as vagas cadastradas no MongoDB com paginação(Precisa de autenticação).
 - **Query**: A Query precisa especificar qual pagina ira retornar e a quantidade de registros na página
 - **Exemplo**:  /jobs/?page=1&limit=8
 ### 🔵 GET /search
-- **Descrição**: Retorna todas as 5 tecnologias mais procuradas e as 5 cidades que mais pesquisaram por ela.
+- **Descrição**: Retorna todas as 5 tecnologias mais procuradas e as 5 cidades que mais pesquisaram por ela(Precisa de autenticação).
 ### 🔵 GET /jobs/search
-- **Descrição**: Retorna todas as vagas buscando por diversos filtros através da query.
+- **Descrição**: Retorna todas as vagas buscando por diversos filtros através da query(Precisa de autenticação).
 - **Query**: A query deve pesquisar por propriedades das vagas como salary, tipo de contrato ou local
 - **Exemplo**: /search?jobcontract=clt&localtype=presencial
 ### 🔵 GET /jobs/all
-- **Descrição**: Retorna todas as vagas cadastradas no mongoDB.
+- **Descrição**: Retorna todas as vagas cadastradas no mongoDB(Precisa de autenticação).
 
 ### 🟢 POST /auth
 - **Descrição**: Faz o login e retornar um token.
@@ -80,8 +80,7 @@ password: "senha1234"
 }
 ```
 ### 🟢 POST /technology/register
-- **Descrição**: Cria uma tecnologia no bando de dados.
-- **Descrição**: Deve ser passado o ID.
+- **Descrição**: Cria uma tecnologia no bando de dados(Precisa de autenticação).
 - **Corpo da Requisição**:
 ```javascript
 {
@@ -89,7 +88,7 @@ name: "React Native"
 }
 ```
 ### 🟢 POST /user/favorites
-- **Descrição**: Adiciona uma vaga ao favoritos do usuário.
+- **Descrição**: Adiciona uma vaga ao favoritos do usuário(Precisa de autenticação).
 - **Corpo da Requisição**:
 ```javascript
 {
@@ -110,7 +109,7 @@ favorites: "6516d478d6c472b0832a28a9"
 
 
 ### 🟢 POST /jobs/register
-- **Descrição**: Cria uma vaga no bando de dados.
+- **Descrição**: Cria uma vaga no bando de dados(Precisa de autenticação).
 - **Corpo da Requisição**:
 ```javascript
 {
