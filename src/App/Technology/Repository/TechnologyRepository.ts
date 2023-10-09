@@ -49,12 +49,12 @@ class TechnologyRepository {
   }
 
 
-async FindByName(names: string | string[]) {
-  if (!Array.isArray(names)) {
-    names = [names]; 
+  async FindByName(names: string | string[]) {
+    if (!Array.isArray(names)) {
+      names = [names]; 
+    }
+    return await this.model.find({ name: { $in: names.map(name => new RegExp(`^${name.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')}$`, 'i')) } });
   }
-  return await this.model.find({ name: { $in: names.map(name => new RegExp(`^${name.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')}$`, 'i')) } });
-}
   
 
 }
