@@ -13,7 +13,7 @@ class TechnologyService {
 
         try {
             if (!data.name) {
-                return MakeErrors("Nome da tecnologia não fornecido", STATUS_CODE.BAD_REQUEST)
+                return MakeErrors("Nome da tecnologia não fornecida", STATUS_CODE.BAD_REQUEST)
             }
             const FoundTech = await this.repository.FindByName(data.name) 
           

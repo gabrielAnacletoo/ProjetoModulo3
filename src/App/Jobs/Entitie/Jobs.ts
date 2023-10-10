@@ -8,7 +8,7 @@ const JobsSchema = new Schema({
   jobcontract: {type: String, required: true, enum: ['clt', 'pj'], default:null },//clt ou pj
   localtype: {type: String, required:true, enum: ['hibrido', 'remoto', 'presencial'], default: null},//hibrido , remoto, presencial
   city: { type: String, required: true}, //cidade
-  // UF: { type: String, required: true}, //Estado
+  UF: { type: String, required: true}, //Estado
   technology : [{ type: String, required: true}],//tecnologia
   website: { type: String, required: true},//link da empresa
   company: { type: String, required: true }, //nome da empresa

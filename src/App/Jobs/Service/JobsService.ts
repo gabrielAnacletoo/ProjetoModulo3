@@ -6,7 +6,7 @@ import { STATUS_CODE } from "../../../Utils/StatusCode/StatusCode";
 import { MakeErrors } from "../../../Utils/MakeErrors/MakeErrors";
 import { UserRepository } from "../../User/Repository/UserRepository";
 import JWT from "jsonwebtoken";
-;
+import { JobsDocument } from "../Entitie/Jobs";
 
 interface Filter {
     [key: string]: string;
@@ -75,9 +75,9 @@ class JobService {
             if (filter.technology) {
                 let IncrementedTechnology: (Incremented | null)[] = [];
                 const TechFind = await this.TechRepository.FindByName(filter.technology)
-                if (!TechFind) {
-                    return MakeErrors("Tecnologia não encontrada", STATUS_CODE.NOT_FOUND);
-                }
+                    if (!TechFind || TechFind.length === 0) {
+                        return MakeErrors("Tecnologia não encontrada", STATUS_CODE.NOT_FOUND);
+                    }
                 if (TechFind) {
                     for (const tech of TechFind) {
                         const existingTechID = tech._id.toString();
