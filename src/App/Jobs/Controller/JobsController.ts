@@ -33,9 +33,12 @@ class JobsController {
             }
             // Filtrar as vagas
             const results = await this.service.FilterFromService(filter,token);
-
+            if('error' in results && results.error){
+                return res.status(results.status).json(results);
+            }
             // Retornar os resultados
             res.status(STATUS_CODE.OK).json(results)
+
         } catch (error: any) {
             return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({ error: 'Erro interno no servidor' });
         }
