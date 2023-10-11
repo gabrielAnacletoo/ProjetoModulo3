@@ -25,16 +25,6 @@ class TechnologyController {
         }
     }
 
-    // async FindTopFiveGlobal(req: Request, res: Response) {
-    //     try {
-    //         const Result = await this.service.FindTopFiveGlobal()
-    //         return res.status(STATUS_CODE.OK).json(Result);
-    //     } catch (error) {
-    //         return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({ error: 'Erro interno no servidor' });
-    //     }
-
-    // }
-
     async FindAllFromController(req: Request, res: Response){
         try {
             const Result = await this.service.FindAllFromService()
