@@ -8,11 +8,7 @@ class TechnologyRepository {
 
 
   async Create(data: TechnologyDocument) {
-    try {
       return await this.model.create(data)
-    } catch (error: any) {
-      return MakeErrors(error.message, 500)
-    }
   }
 
   async IncrementCount(id: string) {

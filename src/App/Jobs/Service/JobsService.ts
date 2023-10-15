@@ -7,6 +7,8 @@ import { MakeErrors } from "../../../Utils/MakeErrors/MakeErrors";
 import { UserRepository } from "../../User/Repository/UserRepository";
 import JWT from "jsonwebtoken";
 import { JobsDocument } from "../Entitie/Jobs";
+import { TechnologyDocument } from "../../Technology/Entities/Technology";
+
 
 interface Filter {
     [key: string]: string;
@@ -22,6 +24,12 @@ interface Incremented {
     name?: string | undefined;
 }
 
+interface TechNew {
+    name: string
+    count: number
+    createdAt: NativeDate
+    updatedAt: NativeDate
+}
 
 
 class JobService {
@@ -34,6 +42,17 @@ class JobService {
 
     async CreateFromService(data: JobsDocument) {
         try {
+            for (const tech of data.technology) {
+                let TechFind = await this.TechRepository.FindByName(tech)
+                if (TechFind.length === 0) {
+                    const newTech = {
+                        name: tech,
+                        count: 0, 
+                    }
+                    const result = await this.TechRepository.Create(newTech as TechNew)
+                    data.technology.splice(data.technology.indexOf(tech), 1, result.name as string);
+                }
+            }
             const CretedJob = await this.Repository.Create(data);
             if (!CretedJob) {
                 return MakeErrors('Essa vaga não pode ser criada, preencha corretamente', STATUS_CODE.BAD_REQUEST)

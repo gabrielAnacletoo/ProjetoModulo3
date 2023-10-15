@@ -65,7 +65,7 @@ describe("Tests JobService CreateFromService", () => {
         technology: ["JavaScript", "React"]  
     }
 
-      vi.spyOn(FakeJobsRepository, "Create").mockResolvedValue({
+    const MockRetrun = {
       _id: "650f7f48d4a302c7a4876eed",
       position: "junior",
       salary: "2000",
@@ -81,31 +81,61 @@ describe("Tests JobService CreateFromService", () => {
       link: "www.indeed.com.br/junior/vaga",
       createdAt: "2023-09-24T00:00:00.000Z",
       updatedAt: "2023-09-24T00:00:00.000Z",
-    __v: 0, } as any) 
+    __v: 0, } as any
+
+    const ReturnNames = [
+      [
+        {
+          _id: "652bea0f3ca43d3bdf165276",
+          name: 'JavaScript',
+          count: 0,
+          createdAt: "2023-10-15T13:33:03.302Z",
+          updatedAt: "2023-10-15T13:33:03.302Z",
+          __v: 0
+        }
+      ],
+      [
+        {
+          _id: "6514caca685426bd89d08d4c",
+          name: 'React',
+          count: 3,
+          createdAt: "2023-09-28T00:37:30.397Z",
+          updatedAt: "2023-10-11T21:36:53.931Z",
+          __v: 0
+        }
+      ]
+    ] as any
+    
+      vi.spyOn(FakeTechnologyRepository, "FindByName").mockResolvedValue(ReturnNames) 
+      vi.spyOn(FakeJobsRepository, "Create").mockResolvedValue(MockRetrun) 
 
     beforeEach(() => {
       vi.resetAllMocks();
     })
-
+const expected = {
+	"position": "junior",
+	"salary": "2000",
+	"jobcontract": "clt",
+	"localtype": "presencial",
+	"city": "São Paulo",
+	"UF": "SP",
+	"technology": [
+		"JavaScript",
+		"React"
+	],
+	"website": "www.indeed.com.br",
+	"company": "Alfa Tech",
+	"companysize": "pequena",
+	"description": "Desenvolvedor junior com experiencia",
+	"link": "www.indeed.com.br/junior/vaga",
+	"createdAt": "2023-09-24T00:00:00.000Z",
+	"updatedAt": "2023-09-24T00:00:00.000Z",
+  "__v": 0,
+   "_id": "650f7f48d4a302c7a4876eed",
+}
 
   const result = await sut.CreateFromService(paramsMock);
-  expect(result).toStrictEqual({
-    _id: "650f7f48d4a302c7a4876eed",
-    position: "junior",
-    salary: "2000",
-    jobcontract: "clt",
-    localtype: "presencial",
-    city: "São Paulo", 
-    UF: "SP",
-    technology: ["JavaScript", "React"],
-    website: "www.indeed.com.br",
-    company: "Alfa Tech",
-    companysize: "pequena",
-    description: "Desenvolvedor junior com experiencia",
-    link: "www.indeed.com.br/junior/vaga",
-    createdAt: "2023-09-24T00:00:00.000Z",
-    updatedAt: "2023-09-24T00:00:00.000Z",
-  __v: 0, } )
+  expect(result).toStrictEqual(expected)
 
 })
 
@@ -135,6 +165,8 @@ it("must return an error on failed creation", async () => {
     const expected = MakeErrors('Essa vaga não pode ser criada, preencha corretamente', STATUS_CODE.BAD_REQUEST)
   
 
+    vi.spyOn(FakeTechnologyRepository, "FindByName").mockResolvedValue([]) 
+    vi.spyOn(FakeTechnologyRepository, "Create").mockResolvedValue([])  
     vi.spyOn(FakeJobsRepository, "Create").mockResolvedValue(expected) 
     const result = await sut.CreateFromService(paramsMock)
     expect(result).toStrictEqual(expected)
@@ -161,7 +193,8 @@ it("should return an error on the server if it doesn't pass within the try", asy
     updatedAt: new Date(),
     }
 
-
+    vi.spyOn(FakeTechnologyRepository, "FindByName").mockResolvedValue([]) 
+    vi.spyOn(FakeTechnologyRepository, "Create").mockResolvedValue([]) 
   vi.spyOn(FakeJobsRepository, "Create").mockRejectedValue(MockError)
 
   const result = await sut.CreateFromService(paramsMock)
